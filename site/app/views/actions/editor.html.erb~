@@ -1,2 +1,3 @@
 <h1>Actions#editor</h1>
 <p>Find me in app/views/actions/editor.html.erb</p>
+<%= link_to 'Submit', 'actions/submit' %>
