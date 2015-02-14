@@ -6,7 +6,7 @@
 	  </head>
 	  
 	  <body> 
-	  	<% form_for :editor  
+	  	<% form_for :editor, url = actions_editor_path  
 	  	<h1 id="myHeader" onclick="getValue()">This is the editor!</h1>
 	 	<script> 
 	 	var myCodeMirror = CodeMirror(document.body, {value: "//Sample Javascript Code\n",mode:  "javascript"});
