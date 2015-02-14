@@ -1,2 +1,18 @@
-<h1>Actions#editor</h1>
-<p>Find me in app/views/actions/editor.html.erb</p>
+<html>
+	  <head>
+		<script src="codemirror.js"></script>
+		<link rel="stylesheet" href="codemirror.css">
+		<script src="spreadsheet.js"></script>
+	  </head>
+	  
+	  <body> 
+	  	<h1 id="myHeader" onclick="getValue()">This is the editor!</h1>
+	 	<script> 
+	 	var myCodeMirror = CodeMirror(document.body, {value: "//Sample Javascript Code\n",mode:  "javascript"});
+	 	//var myCodeMirror= CodeMirror.fromTextArea(myTextArea);
+	 	</script>
+	  </body>
+	 
+	</html>
+	 <html>
+<head>
