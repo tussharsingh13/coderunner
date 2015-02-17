@@ -1,5 +1,10 @@
 class ActionsController < ApplicationController
-  def submit
+  def uploadfile
+  end
+  
+  def savefile
+    post = Datafile.save(params[:user_record])
+    render :text => "File has been uploaded successfully"
   end
 
  def editor
@@ -22,3 +27,4 @@ class ActionsController < ApplicationController
   end
   
 end
+

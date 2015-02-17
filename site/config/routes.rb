@@ -4,8 +4,12 @@ Rails.application.routes.draw do
    post 'actions/submitcode'
    
    get 'actions/submitcode'
-   
-  get 'actions/submit'
+
+  get 'actions/editor'
+  
+  get 'actions/uploadfile'
+  
+  post 'actions/savefile'
 
   get 'actions/editor'
   

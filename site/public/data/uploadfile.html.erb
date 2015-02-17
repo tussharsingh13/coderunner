@@ -1,0 +1,7 @@
+<%= form_for(:any, :url => { :controller => "actions" , :action => "savefile" }, :multipart => true) do |form| %>
+  <p><%= form.label :dataFiles, "Select File" %> :
+  <%= form.file_field 'datafile' %></p>
+  <%= form.submit "Upload" %>
+<% end %>
+
+
