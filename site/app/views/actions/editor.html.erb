@@ -1,17 +1,47 @@
 <html>
 	  <head>
+	  <h1> SUBMIT YOUR CODE HERE </h1>
 		<script src="codemirror.js"></script>
 		<link rel="stylesheet" href="codemirror.css">
-		<script src="spreadsheet.js"></script>
+		<script src="javascript.js"></script>
 	  </head>
 	  
 	  <body> 
-	  	<% form_for :editor, url = actions_editor_path  
-	  	<h1 id="myHeader" onclick="getValue()">This is the editor!</h1>
-	 	<script> 
-	 	var myCodeMirror = CodeMirror(document.body, {value: "//Sample Javascript Code\n",mode:  "javascript"});
-	 	//var myCodeMirror= CodeMirror.fromTextArea(myTextArea);
-	 	</script>
+	  <%= form_for @solution, :url => { :controller => :actions, :action => :submitcode }  do |form| %> 
+	  	<% if @solution.errors.any? %>
+    		<div id="error_explanation">
+      		<h2>
+        	<%= pluralize(@article.errors.count, "error") %> prohibited
+        	this article from being saved:
+      		</h2>
+      		<ul>
+        	<% @solution.errors.full_messages.each do |msg| %>
+          		<li><%= msg %></li>
+        	<% end %>
+      		</ul>
+    		</div>
+    		<% end %>
+		<p>
+		<%= form.label :problem %><br>
+		<%= form.text_field :problem %>
+		</p>
+
+		<p>
+		<%= form.label :code  %><br>
+		<%= form.text_area :code %>
+		<script> var myCodeMirror = CodeMirror.fromTextArea(solution_code,{lineNumbers: true,tabSize: 2,readOnly: false,matchBrackets: true});
+		myCodeMirror.setSize(600,500);
+		</script>
+		<script>
+		myCodeMirror.setValue("//Sample Javascript Codes");
+		</script>
+		
+		<p>
+		<%= form.submit "Submit Code" %> 
+		</p>
+	 	 <% end %>
+		</p>
+	  	<!-- In erb for form_for, classname_attributeValue is the id for the element-->
 	  </body>
 	 
 	</html>

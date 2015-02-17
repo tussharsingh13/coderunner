@@ -11,4 +11,11 @@ Both have different views located at
 site/app/views/actions/submit.html.erb and
 site/app/views/actions/editor.html.erb respectively.
 
-Work as per the current layout now.
+EDITOR:
+A simple form was created for editor with attributes: Problem Name and Code.
+Solution Model has been created.
+Open-source code editor CodeMirror was integrated with the text area in editor.html.erb.
+Currently, the editor has colour code for Javascript.
+When submit button is pressed, the code gets stored in public/submissions and the view submitcode.html.erb is rendered.
+
+

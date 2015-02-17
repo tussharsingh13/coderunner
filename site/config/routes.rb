@@ -1,9 +1,14 @@
 Rails.application.routes.draw do
-  get 'welcome/index'
+  get 'welcome/index' #This ensures that index action is invoked by action controller when localhost../welcome/index URL is entered
 
+   post 'actions/submitcode'
+   
+   get 'actions/submitcode'
+   
   get 'actions/submit'
 
   get 'actions/editor'
+  
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
