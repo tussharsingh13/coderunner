@@ -18,10 +18,16 @@ Open-source code editor CodeMirror was integrated with the text area in editor.h
 Currently, the editor has colour code for Javascript.
 When submit button is pressed, the code gets stored in public/submissions and the view submitcode.html.erb is rendered.
 
-UPLOADER
+UPLOADER:
 Datafile Model has been created.
 A File Picker picks up the file.
 On pressing the Upload Button, the file gets saved to public/Data folder.
 A message "File Uploaded Successfully" is displayed.
+
+AWS_UPLOADER:
+uploadtoaws and uploadedtoaws: two actions created in actions controller
+aws-sdk-v1 added to the gemfile
+aws.rb added to intializers
+Filepicker picks the file and on clicking upload, file gets uploaded to the particular aws-bucket.
 
 

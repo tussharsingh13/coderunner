@@ -1,2 +1,2 @@
 //Sample Javascript Codes
-//Hello Check
+//Hey

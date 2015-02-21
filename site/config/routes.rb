@@ -10,8 +10,11 @@ Rails.application.routes.draw do
   get 'actions/uploadfile'
   
   post 'actions/savefile'
-
-  get 'actions/editor'
+  
+  post 'actions/uploadedtoaws'
+  
+  get 'actions/uploadtoaws'
+  
   
 
   # The priority is based upon order of creation: first created -> highest priority.

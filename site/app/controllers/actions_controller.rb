@@ -18,7 +18,24 @@ class ActionsController < ApplicationController
   File.open(path, "w+") do |f|
   f.write(content)
   end
-  
+ end
+ 
+ def uploadtoaws
+ end
+ 
+ def uploadedtoaws
+ # Make an object in your bucket for your upload
+     
+    obj = S3_BUCKET.objects[params[:file].original_filename]
+#AWS::S3::Bucket.delete('')
+	#if S3_BUCKET.exists?
+	#	render plain: "exists"
+	#end
+     #Upload the file
+    obj.write(
+      file: params[:file],
+      acl: :public_read
+    )
  end
   
   private
