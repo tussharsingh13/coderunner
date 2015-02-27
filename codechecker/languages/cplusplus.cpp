@@ -14,15 +14,20 @@
 #include<sstream>
 
 #define HOME_DIRECTORY "/home/suraj/Desktop/coderunner/codechecker/"
-#define MAX 100000
+#define MAX 1000
 
 using namespace std;
 
 
-void sighandler(int);
+void signal_handler(int);
 void setlimit(int);
 void execute_file(int, string);
 
+void signal_handler(int signum)																	//HANDLES THE RESOURCE MANAGEMENT
+{
+	cout<<"TIME LIMIT EXCEEDED"<<endl<<endl;																	//IF TIME LIMIT EXCEEDS, FLAG=1
+    exit(0);
+}
 
 int main(int argc, char* argv[])
 {
@@ -55,24 +60,33 @@ int main(int argc, char* argv[])
 	{
 		//signal(SIGXCPU, sighandler);
 		pids[i] = fork();
+
 		if(pids[i] < 0)
 		{
 			perror("Process could not be created");
 			abort();
 		}
+			
 		else if(pids[i] == 0 )
 		{	
 			struct timespec start_time,end_time;
 			double exec_time;																	
-  			//setlimit(time_limit);
+
+			setlimit(time_limit);
+		
 			clock_gettime(CLOCK_REALTIME, &start_time);
-			
-			execute_file(i,problem_name);	
-			
+			/*struct sigaction act[3];
+			act[i].sa_handler = signal_handler;
+			sigemptyset(&act[i].sa_mask);
+			act[i].sa_flags = 0;
+			sigaction(SIGXCPU,&act[i],0);*/
+
+			execute_file(i,problem_name);
+
 			clock_gettime(CLOCK_REALTIME, &end_time);
-			exec_time = ( end_time.tv_sec - start_time.tv_sec )+( end_time.tv_nsec - start_time.tv_nsec )/1000000000.0;        //EXECUTION TIME
-    		cout<<exec_time<<endl;													//SIGNAL HANDLER FOR TIME LIMIT
-			exit(0);
+			exec_time = ( end_time.tv_sec - start_time.tv_sec ) + ( end_time.tv_nsec - start_time.tv_nsec )/1000000000.0;        //EXECUTION TIME
+    		cout<<"FILE "<<i<<"  "<<exec_time<<endl;															//SIGNAL HANDLER FOR TIME LIMIT
+			exit(20);
 		}	
 		else
 		{
@@ -104,17 +118,11 @@ void execute_file(int file_number, string problem_name)
 	operation = operation + " <"+ input_filename + " >" + output_filename;
 	system(operation.c_str());
 }
-
-void sighandler(int signum)																	//HANDLES THE RESOURCE MANAGEMENT
-{
-	printf("Time limit exceeded\n");																		//IF TIME LIMIT EXCEEDS, FLAG=1
-    exit(1);
-}
 	
 void setlimit(int time_limit)																		//SETS THE RESOURCE LIMIT
 {
-	struct rlimit64 rl; 
-	getrlimit64(RLIMIT_CPU, &rl); 
+	struct rlimit rl; 
     rl.rlim_cur = time_limit;
-    setrlimit64(RLIMIT_CPU, &rl);  
+    rl.rlim_max = time_limit + 1;
+    setrlimit(RLIMIT_CPU, &rl);  
 }

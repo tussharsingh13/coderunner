@@ -128,10 +128,10 @@ void comparer(int count_files, string problem_name)																		//COMPARES 
 		system(operation.c_str());
 		
 		if(check_diff_file(diff_directory,num1,num2))
-			cout<<"ACCEPTED"<<endl;
+			cout<<"FILE NUMBER ="<<p<<" "<<"ACCEPTED"<<endl;
 		
 		else
-			cout<<"WRONG ANSWER"<<endl;
+			cout<<"FILE NUMBER ="<<p<<" "<<"WRONG ANSWER"<<endl;
 	}
 	string operation2 = "rm -rf ",operation3 = "rm -rf ";
 	operation2 = operation2 + path_output_directory + "*";
