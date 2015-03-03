@@ -2,7 +2,7 @@
 using namespace std;
 int main()
 {
-	int n,t=100000,i;
+	long long int n,t=100000000,i;
 	cin>>t;
 	for(int i=0;i<t;i++)
 	{
@@ -16,6 +16,7 @@ int main()
 		cin>>n;
 		cout<<n<<endl;
 	}*/
-	//while(1);
+//while(1);
+		//cout<<"AAAAAAAAAAAAAAAA";
 	return 1;
 }
