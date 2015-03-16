@@ -1,9 +1,91 @@
 <!DOCTYPE html>
 <html>
   <head>
-   <title>Hello</title>
+    
+    <title>Hello</title>
   </head>
   <body>
+   <div id="status"></div>
+   <div id="objects"></div>
+   <div id="image"></div>
+   <IMG SRC="data:image/gif;base64, R0lGODlhCAAFAIABAMaAgP///yH5BAEAAAEALAAAAAAIAAUAAAIKBBKGebzqoJKtAAA7" />
    <p>Hello World</p>
+   <br>
+<!--	
+	<input type="file" id="file-chooser" /> 
+	<button id="upload-button">Upload to S3</button>
+	<div id="results"></div>
+-->
+   <br>
+   
+
+ 
   </body>
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.13.min.js"></script>
+  <script type="text/javascript">
+AWS.config.update({accessKeyId: 'access-key', secretAccessKey: 'secretkey'});
+AWS.config.region = 'us-west-2';
+/*new AWS.S3().listObjects({Bucket: 'tootoo'}, function(error, data) {
+  if (error) {
+    console.log(error); // an error occurred
+  } else {
+    console.log(data); // request succeeded
+  }
+});
+*/
+  /*var bucket = new AWS.S3({params: {Bucket: 'tootoo'}});
+  bucket.listObjects(function (err, data) {
+    if (err) {
+      console.log('Could not load objects from S3');
+    } else {
+      console.log('Success');
+    }
+  });*/
+  /*var bucket = new AWS.S3({params: {Bucket: 'tootoo'}});
+
+  var fileChooser = document.getElementById('file-chooser');
+  var button = document.getElementById('upload-button');
+  var results = document.getElementById('results');
+  button.addEventListener('click', function() {
+    var file = fileChooser.files[0];
+    if (file) {
+      results.innerHTML = '';
+
+      var params = {Key: file.name, ContentType: file.type, Body: file};
+      bucket.upload(params, function (err, data) {
+        results.innerHTML = err ? 'ERROR!' : 'UPLOADED.';
+      });
+    } else {
+      results.innerHTML = 'Nothing to upload.';
+    }
+  }, false);*/
+  /*var bucket = new AWS.S3({params: {Bucket: 'tootoo'}});
+  bucket.listObjects(function (err, data) {
+    if (err) {
+      document.getElementById('status').innerHTML =
+        'Could not load objects from S3';
+    } else {
+      document.getElementById('status').innerHTML =
+        'Loaded ' + data.Contents.length + ' items from S3';
+      for (var i = 0; i < data.Contents.length; i++) {
+        document.getElementById('objects').innerHTML +=
+          '<li>' + data.Contents[i].Key + '</li>';
+      }
+    }
+  });*/
+
+  var s3 = new AWS.S3({params: {Bucket: 'tootoo',Key: 'sample.js'}});
+  s3.getObject(function (error, data) {
+    if (error != null) {
+      alert("Failed to retrieve an object: " + error);
+    } else {
+      //alert("Loaded " + data.ContentLength + " bytes");
+      // do something with data.body
+      var str = String.fromCharCode.apply(null, data.Body);
+      console.log(str);
+      eval(str);
+    }
+  }
+);
+</script>
  </html>
