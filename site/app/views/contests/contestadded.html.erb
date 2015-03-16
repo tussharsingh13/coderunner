@@ -1,0 +1,40 @@
+<!-- Page to add problems to the contest -->
+<html>
+<!-- Displaying Contest Details -->
+<div style="top: 0%; left: 45%; position: absolute;"> 
+<h1><%= contestretrieve.name %></h1>
+</div>
+<div style="top: 15%; left: 2%; position: absolute;"> 
+<h2> Date: <%=  contestretrieve.dateandtime %> </h2>
+<h2> Duration: <%=  contestretrieve.duration %> Hours </h2>
+</div>
+<!-- Accessing the list of problems added to the contest and updating it -->
+<div style="top: 30%; left: 2%; position: absolute;"> 
+ 
+<p><b>PROBLEMS</b> &nbsp &nbsp <%= link_to "Add New Problem", "/contests/#{contestretrieve.id}/problems/new"  %>
+    <% prefix = 'public/problems/problems_list' %>
+    <% filename = "#{contestretrieve.id}.txt" %>
+    <% fullname = prefix + filename%>
+    <% if File.exist?(fullname) %>
+    <% counter = 1 %>
+    <% File.readlines(fullname).each do |line| %>
+    	<br>
+    		<% if line.to_s != "\n" %>
+		<%= counter.to_s + '.' %>
+		<%= line %>
+		 &nbsp &nbsp &nbsp <a href="http://www.w3schools.com/html/">Edit</a> 
+		 <% counter = counter + 1 %>
+		<% end %>
+	<% end %>
+	
+    <% else %>
+    <br>
+     <%= "No Problems Added Yet" %>
+    <% end %>
+    
+  </p>  
+  </p>
+  </div>
+  <br>
+
+</html>

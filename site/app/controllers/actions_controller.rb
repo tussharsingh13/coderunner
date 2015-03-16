@@ -1,4 +1,5 @@
 class ActionsController < ApplicationController
+ #File Upload
   def uploadfile
   end
   
@@ -6,7 +7,7 @@ class ActionsController < ApplicationController
     post = Datafile.save(params[:user_record])
     render :text => "File has been uploaded successfully"
   end
-
+ #Integration of Editor
  def editor
   @solution = Solution.new
  end
@@ -20,6 +21,7 @@ class ActionsController < ApplicationController
   end
  end
  
+ #Testing aws
  def uploadtoaws
  end
  
@@ -27,7 +29,7 @@ class ActionsController < ApplicationController
  # Make an object in your bucket for your upload
      
     obj = S3_BUCKET.objects[params[:file].original_filename]
-#AWS::S3::Bucket.delete('')
+	AWS::S3::Bucket.delete('tootoo3')
 	#if S3_BUCKET.exists?
 	#	render plain: "exists"
 	#end
@@ -37,11 +39,12 @@ class ActionsController < ApplicationController
       acl: :public_read
     )
  end
-  
-  private
+ 
+  private 
   def solution_params
     params.require(:solution).permit(:problem,:code)
   end
+  
   
 end
 

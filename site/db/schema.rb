@@ -11,9 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150217185724) do
+ActiveRecord::Schema.define(version: 20150305120119) do
+
+  create_table "contests", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "dateandtime"
+    t.float    "duration"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
 
   create_table "datafiles", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "problems", force: :cascade do |t|
+    t.string   "name"
+    t.text     "statement"
+    t.float    "timelimit"
+    t.integer  "memory"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
