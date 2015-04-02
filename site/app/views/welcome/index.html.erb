@@ -4,3 +4,7 @@
 <%= link_to 'Editor', 'actions/editor' %>
 <br>
 <%= link_to 'Submit', 'actions/submit' %>
+<br>
+<% if current_user.admin? %>
+<p> GOD MODE ON </p>
+<% end %>
