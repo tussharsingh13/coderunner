@@ -1,13 +1,12 @@
 Rails.application.routes.draw do
-<<<<<<< HEAD
+
   devise_for :users
-=======
 
 #Resources for Contests and Problems
 resources :contests do
 	resources :problems
 	end
->>>>>>> 579597d1d7623e11bcac3626b71d779cc5c84e3a
+
   get 'welcome/index' #This ensures that index action is invoked by action controller when localhost../welcome/index URL is entered
 
 #For Submitting code using Editor

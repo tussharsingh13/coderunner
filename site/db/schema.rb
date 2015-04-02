@@ -11,10 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20150402123036) do
-=======
-ActiveRecord::Schema.define(version: 20150305120119) do
 
   create_table "contests", force: :cascade do |t|
     t.string   "name"
@@ -23,7 +20,6 @@ ActiveRecord::Schema.define(version: 20150305120119) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
   end
->>>>>>> 579597d1d7623e11bcac3626b71d779cc5c84e3a
 
   create_table "datafiles", force: :cascade do |t|
     t.datetime "created_at", null: false
