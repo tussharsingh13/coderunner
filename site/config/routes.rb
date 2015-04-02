@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   get 'welcome/index' #This ensures that index action is invoked by action controller when localhost../welcome/index URL is entered
 
    post 'actions/submitcode'
