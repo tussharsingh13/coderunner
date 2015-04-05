@@ -1,0 +1,57 @@
+ <html>
+ <!-- Check if admin else 404 page -->
+ 
+ <!-- Back to Home Button -->
+<div style = "top:2%; left: 80%; position: relative">
+	<%= form_tag({controller: "welcome", action: "main"}, method: "get") do %>
+	<%= submit_tag("Back to Home") %>
+	<% end %>
+  </div>
+ <!-- Add input-output files, upload them to AWS, add contest id of the problem -->
+<body bgcolor="rgba(255, 255, 20)">
+
+<h1><b> Add a New Problem </b></h1>
+<%= form_for :ourproblem,  url: ourcontest_ourproblems_path(@id), method: :post do |f| %>
+  
+  <% if @ourproblem.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@ourproblem.errors.count, "error") %> prohibited
+        this contest from being saved:
+      </h2>
+      <ul>
+        <% @ourproblem.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  
+  <p>
+   <b> <%= f.label :Problem_name %> </b>
+    <%= f.text_field :name %>
+  </p>
+ 
+  <p>
+    <b> Problem Statement </b>
+    <br>
+    <%= f.text_area :statement, :rows => "25", :cols => "50" %>
+  </p>
+  
+  <p>
+   <b> <%= f.label :Time_limit %> </b>
+    <%= f.text_field :timelimit %>
+  </p>
+  
+  <p>
+    <b> <%= f.label :Memory_limit %> </b>
+    <%= f.text_field :memory %>
+  </p>
+  
+  <p>
+    <%= f.submit "Add Problem" %>
+  </p>
+<% end %> 
+
+</body>
+</html> 

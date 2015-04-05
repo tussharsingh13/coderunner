@@ -1,0 +1,5 @@
+<!-- Input/Output Files upload -->
+ <%= form_tag('/actions/uploadedtoaws',:method=>'post',multipart: true) do %>
+    <%= file_field_tag :file  %>
+    <%= submit_tag 'Upload Input/Output Zip File' %>
+ <% end %>

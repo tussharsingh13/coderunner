@@ -1,0 +1,63 @@
+<html>
+<head>
+<!-- Check if admin else bring to 404 page -->
+
+<div style="top: 0%; left: 40%; position: absolute;"> 
+<h1>EDIT CONTEST DETAILS</h1> 
+</div>
+<!-- Back to Home Button -->
+<div style = "top:2%; left: 80%; position: relative">
+	<%= form_tag({controller: "welcome", action: "main"}, method: "get") do %>
+	<%= submit_tag("Back to Home") %>
+	<% end %>
+  </div>
+</head>
+
+<body>
+<div style="top: 7%; left: 2%; position: absolute;"> 
+
+<!-- Display any flash notice-->
+<% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, class: "alert alert-info" %>
+  <% end %>
+
+<%= form_for :ourcontest, url: ourcontest_path(@ourcontest.id), method: :patch, html: {class: "nifty_form"} do |f| %>
+  <% if @ourcontest.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@ourcontest.errors.count, "error") %> prohibited
+        this contest from being saved:
+      </h2>
+      <ul>
+        <% @ourcontest.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+ 
+  <p>
+    <%= f.label :Name %>
+    <%= f.text_field :name %>
+  </p>
+ 
+ Enter Start and End in the following format: 'DD-MM-YYYY HH:MM'
+ 
+  <p>
+    <%= f.label :Start %>
+    <%= f.datetime_field :start %>  
+  </p>
+  
+  <p>
+    <%= f.label :End %>
+    <%= f.datetime_field :end %>
+  </p>
+  
+  <p>
+    	   <div style = "left: 2%; position: absolute"> <input type="submit" name="commit" value="Update Contest Details" /></div>
+  </p>
+<% end %>
+
+</div>
+</body>
+</html>

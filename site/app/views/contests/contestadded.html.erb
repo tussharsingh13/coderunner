@@ -22,7 +22,8 @@
     		<% if line.to_s != "\n" %>
 		<%= counter.to_s + '.' %>
 		<%= line %>
-		 &nbsp &nbsp &nbsp <a href="http://www.w3schools.com/html/">Edit</a> 
+		<% @problemedit = Problem.find_by! name: line.to_s %>
+		 &nbsp &nbsp &nbsp <%=link_to "Edit", "/contests/#{contestretrieve.id}/problems/#{@problemedit.id}/edit" %> 
 		 <% counter = counter + 1 %>
 		<% end %>
 	<% end %>

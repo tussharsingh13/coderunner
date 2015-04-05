@@ -52,8 +52,14 @@ class ContestsController < ApplicationController
    end
   end
   
+  def show
+  end
+  
+  def update
+  end
   helper_method :contestexists, :contestretrieve
   
+  #For accessing class variables inside views
   def contestexists
    @@contestexists
   end

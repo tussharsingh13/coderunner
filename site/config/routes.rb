@@ -1,34 +1,45 @@
 Rails.application.routes.draw do
 
 #Resources for Contests and Problems
-resources :contests do
+ resources :contests do
 	resources :problems
 	end
-  get 'welcome/index' #This ensures that index action is invoked by action controller when localhost../welcome/index URL is entered
 
-#For Submitting code using Editor
+ resources :ourcontests do
+	resources :ourproblems
+	end
+	
+  get 'welcome/index' #This ensures that index action is invoked by action controller when localhost../welcome/index URL is entered
+  get 'welcome/main'
+  post 'welcome/main'
+  
+ #For Submitting code using Editor
    post 'actions/submitcode' 
    get 'actions/submitcode'
    get 'actions/editor'
 
-#For Submitting code using files
+ #For Submitting code using files
   get 'actions/uploadfile'
   post 'actions/savefile'
   
-#For uploadin files to aws  
+ #For uploadin files to aws  
   post 'actions/uploadedtoaws'
   get 'actions/uploadtoaws'
   
  #For contest page
   post 'contests/contestadded'
+  get 'contests/contestadded'
   
-#For contest page
+ #For contest page
+  post 'ourcontests/new'
   post 'contests/new'
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'welcome#index'
+  root 'welcome#home'
+  #root 'welcome#index'
   #root 'actions#editor'
 
   # Example of regular route:

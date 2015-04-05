@@ -1,0 +1,27 @@
+<html>
+<div style="top: 0%; left: 35%; position: absolute;"> <h1> Welcome to CODERUNNERS </h1>
+ </div>
+
+<div style="top: 8%; left: 3%; position: absolute;"> <h2> UPCOMING CONTESTS </h2> 
+
+<% @ourcontests.each do |ourcontest| %>
+<table>
+    <tr>
+      <td><%= ourcontest.name %></td>
+      <td><%= ourcontest.start %></td>
+      <td><%= ourcontest.end %></td>
+      <td><%= link_to 'View Contest Details/Edit Problems', ourcontest_path(ourcontest) %></td>
+      <!--Check if Admin --> 
+      <td><%= link_to 'Edit Contest Details', edit_ourcontest_path(ourcontest) %></td> 
+      <td><%= link_to 'Delete Contest', ourcontest_path(ourcontest), method: :delete, data: {confirm: 'Are you sure?'} %> </td>
+    </tr>
+  <% end %>
+</table>
+
+<!--Check if Admin -->
+<br>
+<h2>
+<%= link_to 'Add New Contest', new_ourcontest_path %>
+</h2>
+</div>
+</html>

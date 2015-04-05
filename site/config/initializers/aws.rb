@@ -1,7 +1,7 @@
 AWS.config(
-  :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
-  :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY'],
-  :region => ENV['AWS_REGION']
+  :access_key_id => Rails.application.secrets.AWS_ACCESS_KEY_ID,
+  :secret_access_key => Rails.application.secrets.AWS_SECRET_ACCESS_KEY,
+  :region => Rails.application.secrets.AWS_REGION
 )
 
-S3_BUCKET =  AWS::S3.new.buckets[ENV['S3_BUCKET']]
+S3_BUCKET =  AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET]

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  statement: MyText
+  timelimit: 1.5
+  memory: 1
+  contestid: 1
+
+two:
+  name: MyString
+  statement: MyText
+  timelimit: 1.5
+  memory: 1
+  contestid: 1

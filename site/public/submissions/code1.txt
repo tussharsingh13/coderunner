@@ -1,2 +1,1 @@
 //Sample Javascript Codes
-//Hey

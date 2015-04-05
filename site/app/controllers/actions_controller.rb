@@ -29,7 +29,6 @@ class ActionsController < ApplicationController
  # Make an object in your bucket for your upload
      
     obj = S3_BUCKET.objects[params[:file].original_filename]
-	AWS::S3::Bucket.delete('tootoo3')
 	#if S3_BUCKET.exists?
 	#	render plain: "exists"
 	#end
@@ -37,7 +36,7 @@ class ActionsController < ApplicationController
     obj.write(
       file: params[:file],
       acl: :public_read
-    )
+    ) 
  end
  
   private 
