@@ -100,8 +100,11 @@ int main(int argc, char* argv[])
 void execute_file(int file_number, string problem_name, string string_time_limit)
 {
 	int i,j;
-	string path_output_directory = HOME_DIRECTORY, operation = "ulimit -t ";
-	string path_input_directory = HOME_DIRECTORY, path_log_file_directory = HOME_DIRECTORY;
+	string path_output_directory = HOME_DIRECTORY; 
+	//string operation = "ulimit -t ";
+	string operation = "LD_PRELOAD=/home/suraj/Desktop/coderunner/codechecker/EasySandbox/EasySandbox.so ";
+	string path_input_directory = HOME_DIRECTORY;
+	string path_log_file_directory = HOME_DIRECTORY;
 	string path_executable_directory = HOME_DIRECTORY;
 
 	path_output_directory += problem_name + "/output/";
@@ -119,9 +122,9 @@ void execute_file(int file_number, string problem_name, string string_time_limit
 	string input_filename = path_input_directory + "input" + num1 + num2 + ".txt";
 	string output_filename = path_output_directory + "output" + num1 + num2 + ".txt";
 	string log_filename = path_log_file_directory + "log_file" + num1 + num2 + ".txt";
-
-	operation = operation + string_time_limit + ";" + path_executable_directory + "./test <"+ input_filename + " >" + output_filename + " 2>" + log_filename;
-	//cout<<operation<<endl<<endl;
+	setlimit(timelimit);
+	//operation = operation + string_time_limit + ";" + path_executable_directory + "./test <"+ input_filename + " >" + output_filename + " 2>" + log_filename;
+	operation = operation + path_executable_directory + "./test <"+ input_filename + " >" + output_filename + " 2>" + log_filename;
 	system(operation.c_str());
 }
 	
