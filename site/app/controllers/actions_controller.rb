@@ -21,23 +21,30 @@ class ActionsController < ApplicationController
   end
  end
  
+ def instructionmanual
+ end
+ 
  #Testing aws
  def uploadtoaws
  end
  
  def uploadedtoaws
  # Make an object in your bucket for your upload
-     
-    obj = S3_BUCKET.objects[params[:file].original_filename]
-	#if S3_BUCKET.exists?
-	#	render plain: "exists"
-	#end
-     #Upload the file
-    obj.write(
+    s3 = AWS::S3.new
+    bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_DETAILS]
+    filename = 'user1/' + params[:file].original_filename
+    obj = bucket.objects[filename]
+    #obj = S3_BUCKET_DETAILS.objects[params[:file].original_filename]
+    
+ #Upload the file
+    obj.write( 
       file: params[:file],
       acl: :public_read
-    ) 
- end
+    )
+    flash[:notice] = 'TEST CASES UPLOADED'
+    redirect_to :back 
+  
+  end
  
   private 
   def solution_params

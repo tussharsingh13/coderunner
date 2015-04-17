@@ -1,0 +1,23 @@
+<html>
+<h1>
+<%= current_user.first_name %>
+<%= current_user.last_name %>
+<% if current_user.admin? %>
+&nbsp (Admin) 
+<% end %>
+
+</h1>
+<h3>
+About Me: <div style="color:#FFFFFF"> <%= current_user.about_me %> </div>
+<br/>
+Username: <div style="color:#FFFFFF"> <%= current_user.username %> </div>
+<br/>
+First Name: <div style="color:#FFFFFF"> <%= current_user.first_name %> </div>
+<br/>
+Last Name: <div style="color:#FFFFFF"> <%= current_user.last_name %> </div>
+<br/>
+Email: <div style="color:#FFFFFF"> <%= current_user.email %> </div>
+<br/>
+College: <div style="color:#FFFFFF"> <%= current_user.college %> </div>
+</h3>
+</html>

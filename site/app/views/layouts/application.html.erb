@@ -1,14 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Site</title>
+ 
+  <title> Coderunners </title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
-<body>
+
+<body bgcolor="rgba(255,255,170)">
 
 <%= yield %>
+<% if notice %>
+  <b><p class="alert alert-success"><%= notice %></p></b>
+<% end %>
+<% if alert %>
+  <p class="alert alert-danger"><%= alert %></p>
+<% end %>
+<p class="navbar-text pull-right">
+<div class="navbar-text pull-right", style = "top:0%; left: 57%; position: absolute; color:#FFFF00">
+<!-- Display Logged in user on each page -->
+ <% if user_signed_in? %>
+  Hello <strong ><%= current_user.username %></strong>! &nbsp
+  <%= link_to 'View profile', userdetails_profile_path, :class => 'navbar-link' ,:style=>'color:#FFFFFF;' %>|
+  <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' ,:style=>'color:#FFFFFF;' %> |
+  <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link',:style=>'color:#FFFFFF;'  %>
+ <% else %>
+  <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link',:style=>'color:#FFFFFF;'  %> |
+  <%= link_to "Login", new_user_session_path, :class => 'navbar-link' ,:style=>'color:#FFFFFF;'  %>
+  <% end %>
 
+<!-- Link to Home -->
+| <%= link_to "Home", welcome_main_path, :class => 'navbar-link',:style=>'color:#FFFFFF;' %>
+
+</div>
 </body>
 </html>

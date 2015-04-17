@@ -1,27 +1,89 @@
 <html>
-<div style="top: 0%; left: 35%; position: absolute;"> <h1> Welcome to CODERUNNERS </h1>
+<div style="top: 4%; left: 35%; position: absolute;"> <h1> Welcome to CODERUNNERS!! </h1>
  </div>
+ 
 
-<div style="top: 8%; left: 3%; position: absolute;"> <h2> UPCOMING CONTESTS </h2> 
+<div style="top: 10%; left: 3%; position: absolute;"> <h2> UPCOMING CONTESTS </h2> 
 
+<% flag = 0 %>
+<!-- Separate Ongoing and Upcoming Contests -->
 <% @ourcontests.each do |ourcontest| %>
-<table>
-    <tr>
-      <td><%= ourcontest.name %></td>
-      <td><%= ourcontest.start %></td>
-      <td><%= ourcontest.end %></td>
-      <td><%= link_to 'View Contest Details/Edit Problems', ourcontest_path(ourcontest) %></td>
-      <!--Check if Admin --> 
-      <td><%= link_to 'Edit Contest Details', edit_ourcontest_path(ourcontest) %></td> 
-      <td><%= link_to 'Delete Contest', ourcontest_path(ourcontest), method: :delete, data: {confirm: 'Are you sure?'} %> </td>
-    </tr>
-  <% end %>
-</table>
+<% current = Time.zone.now  %> 
+<% contestBegin = ourcontest.start  %> 
+<% contestEnd = ourcontest.end  %>
+<% contestBegan = contestBegin <= current %>
+<% contestOngoing = contestEnd >= current %>
+	<% if !contestBegan%>
+	<% flag = 1 %>
+	<table>
+	<tr>
+	<td><b style="color:#FFFFFF"> Name: </b><%= ourcontest.name %>&nbsp</td>
+	<td><b style="color:#FFFFFF"> Start: </b> <%= ourcontest.start.to_time.strftime('%a, %b %d %Y %H:%M') %>&nbsp</td>
+	<td><b style="color:#FFFFFF"> End: </b> <%= ourcontest.end.to_time.strftime('%a, %b %d %Y %H:%M') %>&nbsp</td>
+	<b>
+	<td><i><b><%= link_to 'View Contest', ourcontest_path(ourcontest) , :style=>"color:#000000"%></b></i></td>
+	<!-- Admin View -->
+	<% if current_user.admin? %>
 
-<!--Check if Admin -->
+	<td><i><b>&nbsp<%= link_to 'Edit Contest Details', edit_ourcontest_path(ourcontest) , :style=>"color:#000000"%></b></i></td> 
+
+	<td><i><b> &nbsp <i><%= link_to 'Delete Contest', ourcontest_path(ourcontest), method: :delete, data: {confirm: 'Are you sure?'}, :style=>"color:#000000" %> </i></b></td>
+	<% end %> <!-- end of if admin -->
+	</b>
+	</tr>
+	<% end %> <!-- If contest is ongoing -->
+	</table>
+	<%end%> <!-- end of contests loop -->
+	
+<!-- In case of No Upcoming Contests -->	
+<% if flag == 0 %>
+<p> No Upcoming Contests </p>
+<% end %>
+
+<!-- Ongoing Contests -->
+<h2> ONGOING CONTESTS </h2>
+<% flag1 = 0 %>
+<!-- Separate Ongoing and Upcoming Contests -->
+<% @ourcontests.each do |ourcontest| %>
+<% current = Time.zone.now  %> 
+<% contestBegin = ourcontest.start  %> 
+<% contestEnd = ourcontest.end  %>
+<% contestBegan = contestBegin <= current %>
+<% contestOngoing = contestEnd >= current %> 
+	<% if contestBegan && contestOngoing%>
+	<% flag1 = 1 %>
+	<table>
+	<tr>
+	<td><b style="color:#FFFFFF"> Name: </b><%= ourcontest.name %>&nbsp</td>
+	<td><b style="color:#FFFFFF"> Start: </b> <%= ourcontest.start.to_time.strftime('%a, %b %d %Y %H:%M') %>&nbsp</td>
+	<td><b style="color:#FFFFFF"> End: </b> <%= ourcontest.end.to_time.strftime('%a, %b %d %Y %H:%M') %>&nbsp</td>
+	<b>
+	<td><i><b> <%= link_to 'View Contest', ourcontest_path(ourcontest) , :style=>"color:#000000"%></b></i></td>
+	<!-- Admin View -->
+	<% if current_user.admin? %>
+
+	<td><i><b>&nbsp<%= link_to 'Edit Contest Details', edit_ourcontest_path(ourcontest) , :style=>"color:#000000"%></b></i></td> 
+
+	<td> &nbsp <i><b><%= link_to 'Delete Contest', ourcontest_path(ourcontest), method: :delete, data: {confirm: 'Are you sure?'}, :style=>"color:#000000" %> </i></b></td>
+	<% end %> <!-- end of if admin -->
+	</b>
+	</tr>
+	<% end %> <!-- If contest is ongoing -->
+	</table>
+	<%end%> <!-- end of contests loop -->
+
+<!-- In case of No Ongoing Contests -->	
+<% if flag1 == 0 %>
+<p> No Upcoming Contests </p>
+<% end %>
+ 
+<!--Admin View -->
+<% if current_user.admin? %>
 <br>
 <h2>
-<%= link_to 'Add New Contest', new_ourcontest_path %>
+<%= link_to 'Add New Contest', new_ourcontest_path, :style=>"color:#000000"%>
 </h2>
+<% end %>
+
 </div>
 </html>

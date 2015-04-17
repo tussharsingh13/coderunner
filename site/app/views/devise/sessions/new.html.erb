@@ -1,0 +1,30 @@
+<h1><b> Welcome to Coderunners</b></h1>
+
+<h2><b> Log in/Sign up</b></h2>
+
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true %>
+  </div>
+<br>
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
+
+  <b>
+  <% if devise_mapping.rememberable? -%>
+    <div class="field",style="color:#FFFFFF">
+      <%= f.check_box :remember_me %>
+      <%= f.label :remember_me %>
+    </div>
+  <% end -%>
+  </b>
+  <br>
+  <div class="actions",style="color:#FFFFFF" >
+    <%= f.submit "Log in" %>
+  </div>
+<% end %>
+<br>
+<%= render "devise/shared/links" %>

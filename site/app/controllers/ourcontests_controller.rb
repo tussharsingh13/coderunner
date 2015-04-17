@@ -6,10 +6,18 @@ class OurcontestsController < ApplicationController
  end
 
  def new
+   #Admin Layer
+   if (current_user.admin? == false)
+    redirect_to '/404.html' 
+   end 
   @ourcontest = Ourcontest.new
  end
  
  def edit
+   #Admin Layer
+ if (current_user.admin? == false)
+    redirect_to '/404.html' 
+   end 
   @ourcontest = Ourcontest.find(params[:id])
  end
  
@@ -35,6 +43,7 @@ class OurcontestsController < ApplicationController
  
  def show
   @ourcontest = Ourcontest.find(params[:id])
+  @problemedit = Ourproblem.new
  end
  
  def destroy

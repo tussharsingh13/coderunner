@@ -1,5 +1,9 @@
 class OurproblemsController < ApplicationController
  def new
+ #Admin Layer
+ if (current_user.admin? == false)
+    redirect_to '/404.html' 
+   end 
   @id = params[:ourcontest_id]
   #render :text => "Hey #{@id}"
   @ourcontest=Ourcontest.find(params[:ourcontest_id])
@@ -7,8 +11,7 @@ class OurproblemsController < ApplicationController
  end
  
  def index
- #@ourproblems = Ourcontest.all
- @ourcontest = Ourcontest.new
+ @ourcontest = Ourcontest.find(params[:ourcontest_id])
  end
 
  def create
@@ -17,24 +20,50 @@ class OurproblemsController < ApplicationController
   @ourproblem.contestid = params[:ourcontest_id]
   
   if @ourproblem.save
-  render plain: params[:ourproblem].inspect
-  render :text => "hey"
-   redirect_to :action => :index
+   	#Retrieve the saved problem to get its id
+	@problemretrieve = Ourproblem.find_by! name: @ourproblem.name 
+	
+	#Save the problem name to the corresponding contest file
+	prefix = 'public/problems/problems_list' 
+	filename = "#{params[:ourcontest_id]}.txt" 
+	fullname = prefix + filename
+		if File.exist?(fullname)
+		 problems_file = File.open(fullname, "a+") 
+		 problems_file.puts(@problemretrieve.id) 
+		 problems_file.close  	 
+		else
+		 problems_file = File.new(fullname, "w+") 
+		 problems_file.puts(@problemretrieve.id) 
+		 problems_file.close
+		end  
+        #Open the list of problems
+        url = edit_ourcontest_ourproblem_path(@ourcontest,@problemretrieve)
+        redirect_to url 
   else
-   render 'ourcontests/#{params[:ourcontest_id]}/ourproblems'
+   	render 'new'
   end
  end
   
  def edit
- @problemtoedit = Problem.find(params[:id])
+ #Admin Layer
+ if (current_user.admin? == false)
+    redirect_to '/404.html' 
+   end 
+ @ourproblem = Ourproblem.find(params[:id])
  end
  
  def update
- @problemtoedit = Problem.find(params[:id])
- @problemtoedit.update(problem_params)
+  @ourproblem = Ourproblem.find(params[:id])
+  if @ourproblem.update(ourproblem_params)
+	redirect_to ourcontest_ourproblem_path(@ourproblem.contestid,@ourproblem.id)
+  else
+ 	render 'edit'
+  end
  end
  
  def show
+  @ourcontest = Ourcontest.find(params[:ourcontest_id])
+  @ourproblem = Ourproblem.find(params[:id])
  end
  
  def ourproblem_params

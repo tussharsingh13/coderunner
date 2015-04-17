@@ -1,17 +1,12 @@
  <html>
- <!-- Check if admin else 404 page -->
+ <!-- Display only if Admin -->
  
- <!-- Back to Home Button -->
-<div style = "top:2%; left: 80%; position: relative">
-	<%= form_tag({controller: "welcome", action: "main"}, method: "get") do %>
-	<%= submit_tag("Back to Home") %>
-	<% end %>
   </div>
  <!-- Add input-output files, upload them to AWS, add contest id of the problem -->
 <body bgcolor="rgba(255, 255, 20)">
 
 <h1><b> Add a New Problem </b></h1>
-<%= form_for :ourproblem,  url: ourcontest_ourproblems_path(@id), method: :post do |f| %>
+<%= form_for :ourproblem,  url: {:controller => 'ourproblems', :ourcontest_id => params[:ourcontest_id], :action => 'index'}, html: {class: "nifty_form"} do |f| %>
   
   <% if @ourproblem.errors.any? %>
     <div id="error_explanation">

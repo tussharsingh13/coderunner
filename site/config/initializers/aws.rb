@@ -4,4 +4,7 @@ AWS.config(
   :region => Rails.application.secrets.AWS_REGION
 )
 
-S3_BUCKET =  AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET]
+S3_BUCKET_SUBMISSIONS =  AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_SUBMISSIONS]
+S3_BUCKET_DETAILS =  AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_DETAILS]
+S3_BUCKET_USERS =  AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_USERS]
+

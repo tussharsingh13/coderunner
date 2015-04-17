@@ -11,7 +11,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416131610) do
+<<<<<<< HEAD
+ActiveRecord::Schema.define(version: 20150402123855) do
+=======
+ActiveRecord::Schema.define(version: 20150402173435) do
+>>>>>>> 609ae936718c009838afeec0986d365813b0021c
 
   create_table "contests", force: :cascade do |t|
     t.string   "name"
@@ -75,11 +79,6 @@ ActiveRecord::Schema.define(version: 20150416131610) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "admin"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "username"
-    t.string   "college"
-    t.text     "about_me"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

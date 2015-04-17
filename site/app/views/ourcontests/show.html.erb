@@ -1,41 +1,41 @@
 <html>
-<!-- Back to Home Button -->
-<div style = "top:2%; left: 80%; position: relative">
-	<%= form_tag({controller: "welcome", action: "main"}, method: "get") do %>
-	<%= submit_tag("Back to Home") %>
-	<% end %>
-  </div>
-
 <!-- Check if admin or user -->
 <!-- If admin, give option to add problems and display list of problems-->
 <!-- If user, show problems if contest has started else show the remaining time -->
 
-<!--Admin-->
 <!-- Displaying Contest Details -->
 <div style="top: 0%; left: 38%; position: absolute;"> 
 <h1><%= @ourcontest.name %></h1>
 </div>
 <div style="top: 15%; left: 2%; position: absolute;"> 
-<h2> Date: <%=  @ourcontest.start %> </h2>
-<h2> Duration: <%=  @ourcontest.end %></h2>
+<h2> Start: <%=  @ourcontest.start.to_time.strftime('%a, %b %d %Y %H:%M') %> </h2>
+<h2> End: <%=  @ourcontest.end.to_time.strftime('%a, %b %d %Y %H:%M') %></h2>
 </div>
+
+<!--Admin View-->
+<% if current_user.admin? %>
 <!-- Accessing the list of problems added to the contest and updating it -->
 <div style="top: 30%; left: 2%; position: absolute;"> 
  
-<p><b>PROBLEMS</b> &nbsp &nbsp <%= link_to "Add New Problem", "/ourcontests/#{@ourcontest.id}/ourproblems/new"  %>
+<p><b>PROBLEMS</b> &nbsp &nbsp <%= link_to "Add New Problem", "/ourcontests/#{@ourcontest.id}/ourproblems/new",:style=>'color:#FFFFFF;'  %>
     <% prefix = 'public/problems/problems_list' %>
     <% filename = "#{@ourcontest.id}.txt" %>
     <% fullname = prefix + filename%>
     <% if File.exist?(fullname) %>
     <% counter = 1 %>
     <% File.readlines(fullname).each do |line| %>
-    	<br>
     		<% if line.to_s != "\n" %>
-		<%= counter.to_s + '.' %>
-		<%= line %>
-		<% @problemedit = Problem.find_by! name: line.to_s %>
-		 &nbsp &nbsp &nbsp <%=link_to "Edit", "/ourcontests/#{@ourcontest.id}/ourproblems/#{@problemedit.id}/edit" %> 
-		 <% counter = counter + 1 %>
+		<% @problemedit = Ourproblem.find_by id: line.to_s %>
+		 <% if @problemedit %>
+		 <br>
+		 <%= counter.to_s + '.' %>
+		 <%= @problemedit.name %>
+		  &nbsp &nbsp 
+		  <%= link_to "View", "/ourcontests/#{@ourcontest.id}/ourproblems/#{@problemedit.id}",:style=>'color:#FFFFFF;' %>
+		  &nbsp
+		  <%= link_to "Edit", "/ourcontests/#{@ourcontest.id}/ourproblems/#{@problemedit.id}/edit",:style=>'color:#FFFFFF;' %>
+		  <% counter = counter + 1 %>
+		 <% end %>
 		<% end %>
 	<% end %>
 	
@@ -48,15 +48,18 @@
   </p>
   </div>
   <br>
-
-<!-- User -->
-<div style="top: 60%; left: 2%; position: absolute;"> 
+  
+<% else %>
+<!--User View -->
+<div style="top: 30%; left: 2%; position: absolute;"> 
 <% current = Time.zone.now  %> 
 <% contestBegin = @ourcontest.start  %> 
 <% contestEnd = @ourcontest.end  %>
 <% condition1 = contestBegin <= current %>
 <% condition2 = contestEnd >= current %>
 <% if condition1 && condition2 %>
+ <h3> <%= "Contest is in progress!" %> </h3>
+<!-- Submit Button -->
 <p><b>PROBLEMS</b> &nbsp &nbsp
     <% prefix = 'public/problems/problems_list' %>
     <% filename = "#{@ourcontest.id}.txt" %>
@@ -64,13 +67,16 @@
     <% if File.exist?(fullname) %>
     <% counter = 1 %>
     <% File.readlines(fullname).each do |line| %>
-    	<br>
     		<% if line.to_s != "\n" %>
-		<%= counter.to_s + '.' %>
-		<%= line %>
-		<% @problemedit = Problem.find_by! name: line.to_s %>
-		 &nbsp &nbsp &nbsp <%=link_to "Edit", "/contests/#{contestretrieve.id}/problems/#{@problemedit.id}/edit" %> 
-		 <% counter = counter + 1 %>
+		<% @problemedit = Ourproblem.find_by id: line.to_s %>
+		 <% if @problemedit %>
+		 <br>
+		 <%= counter.to_s + '.' %>
+		 <%= @problemedit.name %>
+		  &nbsp &nbsp
+		  <%= link_to "View", "/ourcontests/#{@ourcontest.id}/ourproblems/#{@problemedit.id}",:style=>'color:#FFFFFF;' %>
+		  <% counter = counter + 1 %>
+		  <% end %>
 		<% end %>
 	<% end %>
 	
@@ -81,7 +87,6 @@
     
   </p>  
   </p>
-  <%= "Contest is in progress" %>
   <% seconds = contestEnd - current %>
 	<% mm, ss = seconds.divmod(60) %>           
 	<% hh, mm = mm.divmod(60) %>          
@@ -107,6 +112,7 @@
 	<%= timeLeft = dd.to_s+"days "+hh.to_s + "hours " + mm.to_s + "minutes " + ss.to_s + "seconds to go!" %>
 	</h2>
 	</b> 
- <%end%>
+ <% end %>
+<% end %>
  </div>
 </html>
