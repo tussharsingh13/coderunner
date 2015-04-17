@@ -1,4 +1,3 @@
-#include <iostream>
 #include <unistd.h>
 #include <iostream>
 #include <stdlib.h>
@@ -15,24 +14,14 @@
 #include <sstream>
 #include <ulimit.h>
 using namespace std;
+
 int main()
 {
-	long long int n,t=10,i;
+	int i,t;
 	cin>>t;
-	//system("exit");
-	for(int i=0;i<t;i++)
+	for(i=0;i<t;i++)
 	{
 		cout<<i<<endl;
 	}
-	//{}
-
-	/*cin>>t;
-	for(i=1;i<=t;i++)
-	{
-		cin>>n;
-		cout<<n<<endl;
-	}*/
-//while(1);
-		//cout<<"AAAAAAAAAAAAAAAA";
-	return 1;
+	return 0;
 }

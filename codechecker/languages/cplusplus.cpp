@@ -22,7 +22,7 @@ using namespace std;
 
 void signal_handler(int);
 void setlimit(int);
-void execute_file(int, string, string);
+void execute_file(int, string, string,string);
 
 void signal_handler(int signum)																	//HANDLES THE RESOURCE MANAGEMENT
 {
@@ -36,9 +36,12 @@ int main(int argc, char* argv[])
 	string compilation_error_file = HOME_DIRECTORY;
 	string problem_name = argv[8];
 	test_file = argv[2];
-	path_test_file += problem_name + "/";
+	path_test_file += problem_name + "/user_codes/";
 	compilation_error_file += problem_name + "/compilation_error_file.txt";
-	operation = "g++ "+ path_test_file + test_file + " -o " + path_test_file + "test" + " 2>" + compilation_error_file;
+
+	string executable_name = test_file;
+	executable_name.erase(executable_name.end()-4,executable_name.end());
+	operation = "g++ "+ path_test_file + test_file + " -o " + path_test_file + executable_name + " 2>" + compilation_error_file;
 	system(operation.c_str());																			//COMPILATION OF THE TEST FILE
 	
 	int length=0;
@@ -73,7 +76,7 @@ int main(int argc, char* argv[])
 			struct timespec start_time,end_time;
 			double exec_time;																	
 
-			setlimit(time_limit);
+			//setlimit(time_limit);
 		
 			clock_gettime(CLOCK_REALTIME, &start_time);
 			/*struct sigaction act[3];
@@ -82,7 +85,7 @@ int main(int argc, char* argv[])
 			act[i].sa_flags = 0;
 			sigaction(SIGXCPU,&act[i],0);*/
 
-			execute_file(i,problem_name,argv[4]);
+			execute_file(i,problem_name,argv[4],executable_name);
 
 			clock_gettime(CLOCK_REALTIME, &end_time);
 			exec_time = ( end_time.tv_sec - start_time.tv_sec ) + ( end_time.tv_nsec - start_time.tv_nsec )/1000000000.0;        //EXECUTION TIME
@@ -97,12 +100,12 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void execute_file(int file_number, string problem_name, string string_time_limit)
+void execute_file(int file_number, string problem_name, string string_time_limit,string test_file)
 {
 	int i,j;
 	string path_output_directory = HOME_DIRECTORY; 
-	//string operation = "ulimit -t ";
-	string operation = "LD_PRELOAD=/home/suraj/Desktop/coderunner/codechecker/EasySandbox/EasySandbox.so ";
+	string operation = "ulimit -t ";
+	//string operation = "LD_PRELOAD=/home/suraj/Desktop/coderunner/codechecker/EasySandbox/EasySandbox.so ";
 	string path_input_directory = HOME_DIRECTORY;
 	string path_log_file_directory = HOME_DIRECTORY;
 	string path_executable_directory = HOME_DIRECTORY;
@@ -110,7 +113,7 @@ void execute_file(int file_number, string problem_name, string string_time_limit
 	path_output_directory += problem_name + "/output/";
 	path_input_directory += problem_name + "/input/";
 	path_log_file_directory += problem_name + "/log_files/";
-	path_executable_directory += problem_name + "/";
+	path_executable_directory += problem_name + "/user_codes/";
 	
 	j=file_number%10; i=file_number/10;
 	stringstream s1,s2;string num1,num2;
@@ -122,9 +125,9 @@ void execute_file(int file_number, string problem_name, string string_time_limit
 	string input_filename = path_input_directory + "input" + num1 + num2 + ".txt";
 	string output_filename = path_output_directory + "output" + num1 + num2 + ".txt";
 	string log_filename = path_log_file_directory + "log_file" + num1 + num2 + ".txt";
-	setlimit(timelimit);
-	//operation = operation + string_time_limit + ";" + path_executable_directory + "./test <"+ input_filename + " >" + output_filename + " 2>" + log_filename;
-	operation = operation + path_executable_directory + "./test <"+ input_filename + " >" + output_filename + " 2>" + log_filename;
+	//setlimit(timelimit);
+	operation = operation + string_time_limit + ";" + path_executable_directory + "./" + test_file + " <"+ input_filename + " >" + output_filename + " 2>" + log_filename;
+	//operation = operation + path_executable_directory + "./" + test_file + " <"+ input_filename + " >" + output_filename + " 2>" + log_filename;
 	system(operation.c_str());
 }
 	
