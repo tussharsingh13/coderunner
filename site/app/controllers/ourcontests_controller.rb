@@ -52,7 +52,7 @@ class OurcontestsController < ApplicationController
     #Before deleting the contest, delete the contest problems through a query
     @contestproblems = @ourproblems.where(:contestid => @ourcontest.id)
     @contestproblems.each do |ourproblem|
-     @ourproblem.destroy
+     	ourproblem.destroy
      end
      
     #Now,delete the corresponding file in the public folder
@@ -68,8 +68,29 @@ class OurcontestsController < ApplicationController
     redirect_to ourcontests_path
  end
  
+ def submit
+    @ourcontest = Ourcontest.find(params[:ourcontest_id])
+    #Check if contest has started
+    current = Time.zone.now   
+	contestBegin = @ourcontest.start   
+	contestEnd = @ourcontest.end  
+	contestStarted = contestBegin <= current 
+	contestNotOver = contestEnd >= current 
+	if (!contestStarted || !contestNotOver)
+		flash[:notice] = "Contest hasn't started yet!"
+		redirect_to welcome_main_path
+	end
+    @ourproblem = Ourproblem.new
+    @ourproblems = Ourproblem.all
+    #Before deleting the contest, delete the contest problems through a query
+    @contestproblems = @ourproblems.where(:contestid => @ourcontest.id)
+ end
+ 
+ def verdict
+ end
+ 
  private
  def ourcontest_params
-    params.require(:ourcontest).permit(:name,:start,:end,:duration)
+    params.require(:ourcontest).permit(:name,:start,:end,:duration,:code)
  end
 end

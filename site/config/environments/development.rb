@@ -39,5 +39,15 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
   
+  #Commented the below line and added the following to setup a local mailer daemon
   config.action_mailer.default_url_options = { :host => 'localhost:3000' }
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+  :address              => "smtp.gmail.com",
+  :port                 =>  587,
+  :domain               => 'mondomaine.com',
+  :user_name            => 'btechproj15@gmail.com',
+  :password             => 'btechproject15',
+  :authentication       => 'plain',
+  :enable_starttls_auto =>  true  }
 end

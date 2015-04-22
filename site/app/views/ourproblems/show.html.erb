@@ -1,14 +1,16 @@
 <html>
 <head>
+<!-- Admin View or User View depending on contest timings-->
+<div style="top: 0%; left: 35%; position: absolute;"> 
+<h1> <%=  @ourproblem.name  %> &nbsp (<%= @ourproblem.code %>) </h1> 
+</div> 
 
-<div style="top: 0%; left: 40%; position: absolute;"> 
-<!-- Admin/User View -->
-<h1><%=  @ourproblem.name  %></h1> 
-</div>
 </head>
 
 <body>
 <div style="top: 15%; left: 2%; position: absolute;"> 
+<!-- Admin View -->
+<% if current_user.admin? %>
   <p>
     <b> Problem Statement </b>
     <br>
@@ -25,12 +27,29 @@
     <%= @ourproblem.memory %>&nbsp MB
   </p>
 
-
-<% if current_user.admin? %>
  <h3> <%= link_to "Edit Problem", "/ourcontests/#{@ourcontest.id}/ourproblems/#{@ourproblem.id}/edit",:style=>'color:#FFFFFF;' %> </h3>
+
+
+<!-- User View -->
+<% else %>
+ <p>
+    <b> Problem Statement </b>
+    <br>
+    <%= @ourproblem.statement%>
+  </p>
+  
+  <p>
+   <b> Time Limit </b>
+    <%= @ourproblem.timelimit %>&nbsp seconds
+  </p>
+  
+  <p>
+    <b> Memory Limit </b>
+    <%= @ourproblem.memory %>&nbsp MB
+  </p>
+   <!-- Link to Submit Page -->
+ <h3> <%= link_to "Submit", "/ourcontests/#{@ourcontest.id}/submit",:style=>'color:#FFFFFF;' %> </h3>
 <% end %>
 </div>
-
-<!-- If user, show the link to the submit page -->
 </body>
 </html>

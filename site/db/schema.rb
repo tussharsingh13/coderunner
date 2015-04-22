@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150416131610) do
+ActiveRecord::Schema.define(version: 20150418120153) do
 
   create_table "contests", force: :cascade do |t|
     t.string   "name"
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20150416131610) do
     t.float    "duration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "code"
   end
 
   create_table "ourproblems", force: :cascade do |t|
@@ -43,6 +44,7 @@ ActiveRecord::Schema.define(version: 20150416131610) do
     t.integer  "contestid"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "code"
   end
 
   create_table "problems", force: :cascade do |t|

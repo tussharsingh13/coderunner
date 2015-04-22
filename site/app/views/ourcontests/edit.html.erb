@@ -34,17 +34,22 @@
     <%= f.label :Name %>
     <%= f.text_field :name %>
   </p>
+  
+  <p>
+    <%= f.label :Code %>
+    <%= f.text_field :code %>
+  </p>
  
  Enter Start and End in the following format: 'DD-MM-YYYY HH:MM'
  
   <p>
     <%= f.label :Start %>
-    <%= f.datetime_field :start %>  
+    <%= f.datetime_select :start %>  
   </p>
   
   <p>
     <%= f.label :End %>
-    <%= f.datetime_field :end %>
+    <%= f.datetime_select :end %>
   </p>
   
   <p>
