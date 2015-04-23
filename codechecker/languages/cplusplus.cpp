@@ -1,3 +1,5 @@
+//  ./cplusplus -n test_filename -t time_limit -m count_files -p problem_name -c contest_name -f memory_limit
+//               1	    2		  3	     4		5      6       7      8        9        10    11      12
 #include <unistd.h>
 #include <iostream>
 #include <stdlib.h>
@@ -15,54 +17,54 @@
 #include <ulimit.h>
 
 #define HOME_DIRECTORY "/home/suraj/Desktop/coderunner/codechecker/"
-#define MAX 1000
+#define MAX 110
 
 using namespace std;
 
 
 void signal_handler(int);
 void setlimit(int);
-void execute_file(int, string, string,string);
+void execute_file(int, string, string, string, string, string);
 
-void signal_handler(int signum)																	//HANDLES THE RESOURCE MANAGEMENT
+void signal_handler(int signum)																	
 {
-	cout<<"TIME LIMIT EXCEEDED"<<endl<<endl;																	//IF TIME LIMIT EXCEEDS, FLAG=1
+	cout<<"TIME LIMIT EXCEEDED"<<endl<<endl;
     exit(0);
 }
 
 int main(int argc, char* argv[])
 {
-	string test_file,operation,path_test_file = HOME_DIRECTORY;
-	string compilation_error_file = HOME_DIRECTORY;
-	string problem_name = argv[8];
-	test_file = argv[2];
-	path_test_file += problem_name + "/user_codes/";
-	compilation_error_file += problem_name + "/compilation_error_file.txt";
-
-	string executable_name = test_file;
-	executable_name.erase(executable_name.end()-4,executable_name.end());
-	operation = "g++ "+ path_test_file + test_file + " -o " + path_test_file + executable_name + " 2>" + compilation_error_file;
-	system(operation.c_str());																			//COMPILATION OF THE TEST FILE
+	string test_file = argv[2], problem_name = argv[8], contest_name = argv[10], memory_limit = argv[12];
+	int time_limit = atoi(argv[4]), files_count = atoi(argv[6]);
 	
-	int length=0;
+	string executable_name = test_file;
+	executable_name.erase(executable_name.end()-4,executable_name.end());								
+
+	string path_test_file = HOME_DIRECTORY;  path_test_file += contest_name + "/" + problem_name + "/user_codes/";
+	string compilation_error_file = HOME_DIRECTORY;  compilation_error_file += contest_name + "/" + problem_name + "/compilation_error_files/" + executable_name + "_compilation_error_file.txt";
+	string result_file = HOME_DIRECTORY;   result_file += contest_name + "/" + problem_name + "/results/" + executable_name + "_result.txt";
+
+	string operation;
+	operation = "g++ "+ path_test_file + test_file + " -o " + path_test_file + executable_name + " 2>" + compilation_error_file;
+	system(operation.c_str());	
+
+	int length = 0;
 	ifstream diff_file;
 	diff_file.open((compilation_error_file).c_str(), ios::binary);
 	diff_file.seekg(0,ios::end);
 	length = diff_file.tellg();
 
+    freopen(result_file.c_str(),"w",stdout);
 	if(length !=0)
 	{
-		cout<<"COMPILATION ERROR"<<endl;
+		cout<<test_file<<" "<<"COMPILATION ERROR"<<endl;
 		return 1;
 	}	
-	
-	int files_count = atoi(argv[6]),i, time_limit = atoi(argv[4]);
 
 	pid_t pids[MAX];
 	int status;
-	for(i=0; i<files_count; i++)
+	for(int i=0; i<files_count; i++)
 	{
-		//signal(SIGXCPU, sighandler);
 		pids[i] = fork();
 
 		if(pids[i] < 0)
@@ -76,44 +78,40 @@ int main(int argc, char* argv[])
 			struct timespec start_time,end_time;
 			double exec_time;																	
 
-			//setlimit(time_limit);
-		
 			clock_gettime(CLOCK_REALTIME, &start_time);
-			/*struct sigaction act[3];
-			act[i].sa_handler = signal_handler;
-			sigemptyset(&act[i].sa_mask);
-			act[i].sa_flags = 0;
-			sigaction(SIGXCPU,&act[i],0);*/
 
-			execute_file(i,problem_name,argv[4],executable_name);
+			execute_file(i, problem_name, argv[4], executable_name, contest_name, executable_name);
 
 			clock_gettime(CLOCK_REALTIME, &end_time);
+
 			exec_time = ( end_time.tv_sec - start_time.tv_sec ) + ( end_time.tv_nsec - start_time.tv_nsec )/1000000000.0;        //EXECUTION TIME
-    		//cout<<"FILE "<<i<<"  "<<exec_time<<endl;															//SIGNAL HANDLER FOR TIME LIMIT
+
 			exit(20);
 		}	
+		
 		else
 		{
 			waitpid(-1,&status,0);
 		}
+
 	}
+	
 	return 0;
 }
 
-void execute_file(int file_number, string problem_name, string string_time_limit,string test_file)
+void execute_file(int file_number, string problem_name, string string_time_limit,string test_file, string contest_name, string executable_name)
 {
 	int i,j;
-	string path_output_directory = HOME_DIRECTORY; 
 	string operation = "ulimit -t ";
-	//string operation = "LD_PRELOAD=/home/suraj/Desktop/coderunner/codechecker/EasySandbox/EasySandbox.so ";
+	string path_output_directory = HOME_DIRECTORY; 
 	string path_input_directory = HOME_DIRECTORY;
 	string path_log_file_directory = HOME_DIRECTORY;
 	string path_executable_directory = HOME_DIRECTORY;
 
-	path_output_directory += problem_name + "/output/";
-	path_input_directory += problem_name + "/input/";
-	path_log_file_directory += problem_name + "/log_files/";
-	path_executable_directory += problem_name + "/user_codes/";
+	path_output_directory += contest_name + "/" + problem_name + "/generated_output/";
+	path_input_directory += contest_name + "/" + problem_name + "/input/";
+	path_log_file_directory += contest_name + "/" + problem_name + "/log_files/";
+	path_executable_directory += contest_name + "/" + problem_name + "/user_codes/";
 	
 	j=file_number%10; i=file_number/10;
 	stringstream s1,s2;string num1,num2;
@@ -123,11 +121,10 @@ void execute_file(int file_number, string problem_name, string string_time_limit
 	num2 = s2.str();
 
 	string input_filename = path_input_directory + "input" + num1 + num2 + ".txt";
-	string output_filename = path_output_directory + "output" + num1 + num2 + ".txt";
-	string log_filename = path_log_file_directory + "log_file" + num1 + num2 + ".txt";
-	//setlimit(timelimit);
+	string output_filename = path_output_directory + "/" + executable_name + "_output" + num1 + num2 + ".txt";
+	string log_filename = path_log_file_directory + "/" + executable_name + "_log_file" + num1 + num2 + ".txt";
+
 	operation = operation + string_time_limit + ";" + path_executable_directory + "./" + test_file + " <"+ input_filename + " >" + output_filename + " 2>" + log_filename;
-	//operation = operation + path_executable_directory + "./" + test_file + " <"+ input_filename + " >" + output_filename + " 2>" + log_filename;
 	system(operation.c_str());
 }
 	
