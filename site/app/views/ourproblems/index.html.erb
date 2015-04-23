@@ -4,8 +4,8 @@
 <!-- If user, show problems if contest has started else show the remaining time -->
 
 <!-- Displaying Contest Details -->
-<div style="top: 0%; left: 38%; position: absolute;"> 
-<h1><%= @ourcontest.name %></h1>
+<div style="top: 2%; left: 35%; position: absolute;"> 
+<h1><%= @ourcontest.name %> &nbsp (<%= @ourcontest.code %>)</h1>
 </div>
 <div style="top: 15%; left: 2%; position: absolute;"> 
 <h2> Start: <%=  @ourcontest.start.to_time.strftime('%a, %b %d %Y %H:%M') %> </h2>
@@ -97,6 +97,7 @@
 	<h2>
 	<%= timeLeft = dd.to_s+"days "+hh.to_s + "hours " + mm.to_s + "minutes " + ss.to_s + "seconds left!" %>
 	</h2>
+	 <h3> <%= link_to "Submit", "/ourcontests/#{@ourcontest.id}/submit",:style=>'color:#FFFFFF;' %> </h3>
  <% elsif condition1 %>
   <%= "Contest has ended" %>
  <% else %>

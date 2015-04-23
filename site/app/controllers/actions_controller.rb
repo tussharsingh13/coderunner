@@ -46,6 +46,20 @@ class ActionsController < ApplicationController
   
   end
  
+  def requestsent
+   @user = User.find_by username: params[:username]
+   UserMailer.send_admin_email(@user).deliver_now
+   flash[:notice] = "Request Sent to Admin. Wait for Approval!"
+   redirect_to '/welcome/main'  
+  end
+  
+  def requestapproved
+   @user = User.find_by username: params[:username]
+   @user.update_attribute(:admin, true)
+    flash[:notice] = "#{@user.username} added as Admin!"
+   redirect_to '/welcome/main'  
+  end
+  
   private 
   def solution_params
     params.require(:solution).permit(:problem,:code)

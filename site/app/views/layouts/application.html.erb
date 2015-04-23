@@ -11,27 +11,35 @@
 <body bgcolor="rgba(255,255,170)">
 
 <%= yield %>
+<div class="navbar-text pull-right", style = "top:1%; position: absolute; color:#FFFF00">
 <% if notice %>
-  <b><p class="alert alert-success"><%= notice %></p></b>
+  <b><i><p class="alert alert-success"><%= notice %></p></i></b>
 <% end %>
 <% if alert %>
-  <p class="alert alert-danger"><%= alert %></p>
+  <i><p class="alert alert-danger"><%= alert %></p></i>
 <% end %>
+</div>
 <p class="navbar-text pull-right">
-<div class="navbar-text pull-right", style = "top:0%; left: 57%; position: absolute; color:#FFFF00">
+<div class="navbar-text pull-right", style = "top:0%; left: 1%; position: absolute; color:#FFFF00">
 <!-- Display Logged in user on each page -->
+<!-- Link to Home -->
+<%= link_to "Home", welcome_main_path, :class => 'navbar-link',:style=>'color:#FFFFFF;' %> &nbsp  &nbsp  &nbsp
+
  <% if user_signed_in? %>
-  Hello <strong ><%= current_user.username %></strong>! &nbsp
-  <%= link_to 'View profile', userdetails_profile_path, :class => 'navbar-link' ,:style=>'color:#FFFFFF;' %>|
-  <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' ,:style=>'color:#FFFFFF;' %> |
+  <%= link_to 'View profile', userdetails_profile_path, :class => 'navbar-link' ,:style=>'color:#FFFFFF;' %> &nbsp  &nbsp  &nbsp
+  <%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' ,:style=>'color:#FFFFFF;' %> &nbsp  &nbsp  &nbsp
+  <% if current_user.admin? %> <!-- Admin adds admin and User requests admin rights -->
+   <%= link_to 'Add Admin', actions_adminrights_path, :class => 'navbar-link' ,:style=>'color:#FFFFFF;' %> &nbsp  &nbsp  &nbsp
+  <% else %>
+   <%= link_to 'Become Admin', actions_adminrights_path, :class => 'navbar-link' ,:style=>'color:#FFFFFF;' %> &nbsp  &nbsp  &nbsp
+  <% end %>
+ 
+  Hello <strong> <%= current_user.username %> </strong>! &nbsp
   <%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link',:style=>'color:#FFFFFF;'  %>
  <% else %>
-  <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link',:style=>'color:#FFFFFF;'  %> |
+  <%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link',:style=>'color:#FFFFFF;' %> &nbsp  &nbsp  &nbsp
   <%= link_to "Login", new_user_session_path, :class => 'navbar-link' ,:style=>'color:#FFFFFF;'  %>
   <% end %>
-
-<!-- Link to Home -->
-| <%= link_to "Home", welcome_main_path, :class => 'navbar-link',:style=>'color:#FFFFFF;' %>
 
 </div>
 </body>

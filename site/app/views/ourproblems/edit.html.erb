@@ -18,7 +18,7 @@
   <% end %>
  
  <!-- Instructions for Problem Setters --> 
- <%= link_to "Instructions for Input/Output Format", "/actions/instructionmanual" %>
+ <%= link_to "Instructions for Input/Output Format", "/actions/instructionmanual", :style=>"color:#FFFFFF" %>
  
 <%= form_for :ourproblem, url: ourcontest_ourproblem_path(@ourproblem.contestid,@ourproblem.id), method: :patch, html: {class: "nifty_form"} do |f| %>
   <% if @ourproblem.errors.any? %>
@@ -41,6 +41,11 @@
     <%= f.text_field :name %>
   </p>
  
+ <p>
+   <b> <%= f.label :Problem_code %> </b>
+    <%= f.text_field :code %>
+  </p>
+  
   <p>
     <b> Problem Statement </b>
     <br>

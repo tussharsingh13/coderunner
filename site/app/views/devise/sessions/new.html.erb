@@ -1,5 +1,6 @@
-<h1><b> Welcome to Coderunners</b></h1>
+<h1 style="top: 4%; left: 35%; position: absolute;"><b> Welcome to Coderunners</b></h1>
 
+<div style="top: 10%; position: absolute;" >
 <h2><b> Log in/Sign up</b></h2>
 
 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
@@ -19,7 +20,7 @@
       <%= f.check_box :remember_me %>
       <%= f.label :remember_me %>
     </div>
-  <% end -%>
+  <% end %>
   </b>
   <br>
   <div class="actions",style="color:#FFFFFF" >
@@ -28,3 +29,4 @@
 <% end %>
 <br>
 <%= render "devise/shared/links" %>
+</div>

@@ -63,10 +63,21 @@ class OurproblemsController < ApplicationController
  
  def show
   @ourcontest = Ourcontest.find(params[:ourcontest_id])
+  # Evaluating Conditions 
+  	current = Time.zone.now   
+	contestBegin = @ourcontest.start   
+	contestEnd = @ourcontest.end  
+	contestStarted = contestBegin <= current 
+	contestNotOver = contestEnd >= current 
+	if (!contestStarted || !contestNotOver)
+		flash[:notice] = "Contest hasn't started yet!"
+		redirect_to welcome_main_path
+	end
+	
   @ourproblem = Ourproblem.find(params[:id])
  end
  
  def ourproblem_params
-    params.require(:ourproblem).permit(:name,:statement,:timelimit,:memory)
+    params.require(:ourproblem).permit(:name,:statement,:timelimit,:memory,:code)
   end
 end

@@ -1,0 +1,9 @@
+<html>
+<h1> Submit </h1>
+<%= form_tag(url_for(:controller => 'ourcontests', :action => 'verdict'), :method => 'post') do |f| %> 
+<%= select_tag(:value, 
+   options_for_select( @contestproblems.collect{ |f| [f.code, f.code]}), :prompt => "Select Problem") %> 
+   <%= submit_tag "Submit" %> 
+<% end %>
+
+</html>

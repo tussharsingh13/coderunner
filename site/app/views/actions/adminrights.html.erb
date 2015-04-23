@@ -1,0 +1,20 @@
+<html>
+
+<% if current_user.admin? %>
+<h1> Add an Admin </h1>
+	<%= form_tag(url_for(:controller => 'actions', :action => 'requestapproved'), :method => 'post') do |f| %> 
+	<%= label_tag :enter_username %>
+	<%=  text_field_tag :username %> 
+	<%= submit_tag "Add Admin" %> 
+	<% end %>
+
+<% else %>
+<h1> Send a request to become Admin </h1>
+	<%= form_tag(url_for(:controller => 'actions', :action => 'requestsent'), :method => 'post') do |f| %> 
+	<%= label_tag :enter_username %>
+	<%=  text_field_tag :username %> 
+	<%= submit_tag "Send Request" %>
+	<% end %> 
+<% end %>
+
+</html>

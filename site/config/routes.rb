@@ -44,6 +44,15 @@ Rails.application.routes.draw do
   
  #For user profile
   get 'userdetails/profile'
+ 
+ #For submit page of each contest
+  get '/ourcontests/:ourcontest_id/submit', to: 'ourcontests#submit'
+  post '/ourcontests/:ourcontest_id/verdict', to: 'ourcontests#verdict'
+  
+ #For Admin Rights
+  get 'actions/adminrights'
+  post 'actions/requestsent'
+  post 'actions/requestapproved'
   
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
