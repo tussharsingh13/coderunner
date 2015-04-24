@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  devise_for :users
+  #devise_for :users
+  #Change the controller for DEVISE
+  devise_for :users, controllers: { registrations: "users/registrations",  }
 
 #Resources for Contests and Problems
  resources :contests do
