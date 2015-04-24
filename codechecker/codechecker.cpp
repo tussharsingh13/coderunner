@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 		comparer(count,problem_name, path_output_directory, path_log_file_directory, diff_directory, test_filename, contest_name, executable_name);
 	}	
 	
-	//deleteGeneratedFiles(path_output_directory, diff_directory, path_log_file_directory, problem_name, contest_name, executable_name);
+	deleteGeneratedFiles(path_output_directory, diff_directory, path_log_file_directory, problem_name, contest_name, executable_name);
 	
 	return 0;
 }

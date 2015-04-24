@@ -1,1 +1,0 @@
-problem01.cpp WA
