@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 		comparer(count,problem_name, path_output_directory, path_log_file_directory, diff_directory, test_filename, contest_name, executable_name);
 	}	
 	
-	deleteGeneratedFiles(path_output_directory, diff_directory, path_log_file_directory, problem_name, contest_name, executable_name);
+	//deleteGeneratedFiles(path_output_directory, diff_directory, path_log_file_directory, problem_name, contest_name, executable_name);
 	
 	return 0;
 }
@@ -127,7 +127,7 @@ void comparer(int count_files, string problem_name, string path_output_directory
 		num2 = s2.str();	
 
 		string output_filename = path_output_directory + executable_name + "_output" + num1 + num2 + ".txt";
-		string actual_output_filename = path_actual_output_directory + "/actual_output" + num1 + num2 + ".txt";
+		string actual_output_filename = path_actual_output_directory + "/output" + num1 + num2 + ".txt";
 		string diff_filename = diff_directory + executable_name + "_diff" + num1 + num2 + ".txt";
 
 		string operation = "diff ";
