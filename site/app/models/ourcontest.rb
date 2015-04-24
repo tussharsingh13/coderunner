@@ -1,6 +1,6 @@
 class Ourcontest < ActiveRecord::Base
 validates :name,:start,:end,:code, presence: true
  validates_uniqueness_of :name,:code
- validates :code, format: { with: /\A[^ ]*\z/,
-    message: "Code must not contain space" }
+ validates :code, format: { with: /\A[^ .]*\z/,
+    message: "Code must not contain space or dot" }
 end
