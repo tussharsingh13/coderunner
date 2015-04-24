@@ -54,7 +54,6 @@ int main(int argc, char* argv[])
 	diff_file.seekg(0,ios::end);
 	length = diff_file.tellg();
 
-    freopen(result_file.c_str(),"w",stdout);
 	if(length !=0)
 	{
 		cout<<test_file<<" "<<"COMPILATION ERROR"<<endl;
@@ -75,16 +74,16 @@ int main(int argc, char* argv[])
 			
 		else if(pids[i] == 0 )
 		{	
-			struct timespec start_time,end_time;
-			double exec_time;																	
+			//struct timespec start_time,end_time;
+			//double exec_time;																	
 
-			clock_gettime(CLOCK_REALTIME, &start_time);
+			//clock_gettime(CLOCK_REALTIME, &start_time);
 
 			execute_file(i, problem_name, argv[4], executable_name, contest_name, executable_name);
 
-			clock_gettime(CLOCK_REALTIME, &end_time);
+			//clock_gettime(CLOCK_REALTIME, &end_time);
 
-			exec_time = ( end_time.tv_sec - start_time.tv_sec ) + ( end_time.tv_nsec - start_time.tv_nsec )/1000000000.0;        //EXECUTION TIME
+			//exec_time = ( end_time.tv_sec - start_time.tv_sec ) + ( end_time.tv_nsec - start_time.tv_nsec )/1000000000.0;        //EXECUTION TIME
 
 			exit(20);
 		}	

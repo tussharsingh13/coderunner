@@ -42,8 +42,7 @@ class ActionsController < ApplicationController
       acl: :public_read
     )
     flash[:notice] = 'TEST CASES UPLOADED'
-    redirect_to :back 
-  
+    redirect_to :back  
   end
  
   def requestsent
