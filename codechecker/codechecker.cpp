@@ -18,7 +18,6 @@
 
 
 #define HOME_DIRECTORY "/home/suraj/Desktop/coderunner/codechecker/"
-
 using namespace std;
 
 int input_files_count(string, string);
@@ -118,8 +117,6 @@ void comparer(int count_files, string problem_name, string path_output_directory
 	string path_actual_output_directory = HOME_DIRECTORY;path_actual_output_directory += contest_name + "/" + problem_name + "/output/";
 	string result_file = HOME_DIRECTORY;   result_file += contest_name + "/" + problem_name + "/results/" + executable_name + "_result.txt";
 	
-
-    freopen(result_file.c_str(),"w",stdout);
 	for(p=0;p<count_files;p++)
 	{
 		j = p%10; i = p/10;
