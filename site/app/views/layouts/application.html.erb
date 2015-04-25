@@ -23,7 +23,7 @@
 <div class="navbar-text pull-right", style = "top:0%; left: 1%; position: absolute; color:#FFFF00">
 <!-- Display Logged in user on each page -->
 <!-- Link to Home -->
-<%= link_to "Home", welcome_main_path, :class => 'navbar-link',:style=>'color:#FFFFFF;' %> &nbsp  &nbsp  &nbsp
+<%= link_to "Home", coderunners_path, :class => 'navbar-link',:style=>'color:#FFFFFF;' %> &nbsp  &nbsp  &nbsp
 
  <% if user_signed_in? %>
   <%= link_to 'View profile', userdetails_profile_path, :class => 'navbar-link' ,:style=>'color:#FFFFFF;' %> &nbsp  &nbsp  &nbsp

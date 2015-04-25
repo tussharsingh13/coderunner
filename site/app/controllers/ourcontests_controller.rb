@@ -23,8 +23,14 @@ class OurcontestsController < ApplicationController
  
  def create
   @ourcontest=Ourcontest.new(ourcontest_params)
- 
   if @ourcontest.save
+   #Upload COntest metadata to s3
+   filename = @ourcontest.code + '#metadata.txt'
+	  path = "public/metadata/"+filename
+  	  content = @ourcontest.start.to_s + "\n" + @ourcontest.end.to_s
+  	  metadatafile = File.open(path, "w+") do |f|
+  	  f.write(content)
+	  end
    redirect_to :action => :index
   else
    render 'ourcontests/new'

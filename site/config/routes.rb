@@ -61,6 +61,7 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   #root 'welcome#home'
+  get 'coderunners', to: 'welcome#main'
   root 'welcome#main'
   #root 'actions#editor'
 
