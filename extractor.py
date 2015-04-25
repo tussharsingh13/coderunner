@@ -26,12 +26,15 @@ if __name__ == '__main__':
 				contestcode = namesplit[1]
 				path = LOCAL_PATH + "/" + contestcode + "/" + problemcode
 				subprocess.call(["mkdir", path])
+				subprocess.call(["mkdir", path+"/compilation_error_files"])
+				subprocess.call(["mkdir", path+"/diff_directory"])
+				subprocess.call(["mkdir", path+"/generated_output"])
+				subprocess.call(["mkdir", path+"/log_files"])
+				subprocess.call(["mkdir", path+"/user_codes"])
+				
 				subprocess.call(["unzip", LOCAL_PATH+key.name])
-				subprocess.call(["unzip", "testcases.zip"])
 				subprocess.call(["mv", "input",LOCAL_PATH+contestcode+"/"+problemcode+"/"])
 				subprocess.call(["mv", "output",LOCAL_PATH+contestcode+"/"+problemcode+"/"])
-				subprocess.call(["mv", "metadata.txt",LOCAL_PATH+contestcode+"/"+problemcode+"/"])
-				subprocess.call(["rm", "testcases.zip"])
 				subprocess.call(["rm", LOCAL_PATH+key.name])
 			#Uncomment the below line to delete the files from aws bucket simultaneously 	
 			#bucket.delete_key(key.key)
