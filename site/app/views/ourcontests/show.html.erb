@@ -84,7 +84,8 @@
     <br>
      <%= "No Problems Added Yet" %>
     <% end %>
-    
+    <br>
+    <h2> <%= link_to "Submit", "/ourcontests/#{@ourcontest.id}/submit",:style=>'color:#FFFFFF;' %> </h2>
   </p>  
   </p>
   <% seconds = contestEnd - current %>

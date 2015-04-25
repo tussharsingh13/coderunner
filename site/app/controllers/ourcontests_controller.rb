@@ -23,8 +23,14 @@ class OurcontestsController < ApplicationController
  
  def create
   @ourcontest=Ourcontest.new(ourcontest_params)
- 
   if @ourcontest.save
+   #Upload COntest metadata to s3
+   filename = @ourcontest.code + '#metadata.txt'
+	  path = "public/metadata/"+filename
+  	  content = @ourcontest.start.to_s + "\n" + @ourcontest.end.to_s
+  	  metadatafile = File.open(path, "w+") do |f|
+  	  f.write(content)
+	  end
    redirect_to :action => :index
   else
    render 'ourcontests/new'
@@ -87,6 +93,14 @@ class OurcontestsController < ApplicationController
  end
  
  def verdict
+  #Delete response if present
+  useresponse = current_user.username + '_response.html'
+  s3 = AWS::S3.new
+  if (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_RESPONSES].objects[useresponse].exists?)
+   bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_RESPONSES]
+   object = bucket.objects[useresponse]
+   object.delete
+  end
   #Fetch the contest details
    @ourcontest = Ourcontest.find(params[:ourcontest_id])
   
@@ -96,14 +110,14 @@ class OurcontestsController < ApplicationController
 	 flash[:notice] = "Please select a problem!"
 	 redirect_to :back
 	 
+	else
 	#In case of file upload
-	elsif params[:file]
+	if params[:file]
 	@ourproblem = Ourproblem.find_by code: params[:value]
 	#Compose the filename
-	#Standard -> Usercode#ContestCode#ProblemCode#Timestamp#Timelimit#MemoryLimit
-	  filename = current_user.username+'#'+@ourcontest.code+'#'+@ourproblem.code+'#'+Time.zone.now.to_s+'#'+@ourproblem.timelimit.to_s+'#'+@ourproblem.memory.to_s+'.cpp'
+	#Standard -> Usercode#ContestCode#ProblemCode#Timestamp#Timelimit#MemoryLimit#
+	  filename = current_user.username+'#'+@ourcontest.code+'#'+@ourproblem.code+'#'+Time.zone.now.to_s+'#'+@ourproblem.timelimit.to_i.to_s+'#'+@ourproblem.memory.to_s+'#.cpp'
 
-=begin	  
 	 # Make an object in your bucket for your upload
     	   s3 = AWS::S3.new
     	   bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_SUBMISSIONS]
@@ -115,20 +129,20 @@ class OurcontestsController < ApplicationController
 	  file: params[:file],
 	  acl: :public_read
 	  )
-=end	
+
 	#In case of editor
 	elsif params[:code]
 	@ourproblem = Ourproblem.find_by code: params[:value]
 	
 	#Compose the filename
-	#Standard -> Usercode#ContestCode#ProblemCode#Timestamp#Timelimit#MemoryLimit
-	  filename = current_user.username+'#'+@ourcontest.code+'#'+@ourproblem.code+'#'+Time.zone.now.to_s+'#'+@ourproblem.timelimit.to_s+'#'+@ourproblem.memory.to_s+'.cpp'
+	#Standard -> Usercode#ContestCode#ProblemCode#Timestamp#Timelimit#MemoryLimit#
+	  filename = current_user.username+'#'+@ourcontest.code+'#'+@ourproblem.code+'#'+Time.zone.now.to_s+'#'+@ourproblem.timelimit.to_i.to_s+'#'+@ourproblem.memory.to_s+'#.cpp'
 	  path = "public/submissions/"+filename
   	  content = params[:code]
   	  File.open(path, "w+") do |f|
   	  f.write(content)
 	  end
-=begin
+
   	  # Make an object in your bucket for your upload
     	   s3 = AWS::S3.new
     	   bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_SUBMISSIONS]
@@ -142,14 +156,37 @@ class OurcontestsController < ApplicationController
 	 acl: :public_read
 	 )
   	 uploadfile.close
+
   	 File.delete(path)
-  	 render :text => filename
-=end
-	end
+	end #end inner if
+	
+   useresponse = current_user.username + '_response.html'
+   @finalresponse = '/responses/'+useresponse
+   
+   until (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_RESPONSES].objects[useresponse].exists?) do
+    #Keep loading
+   end
+
+ s3 = AWS::S3.new
+  bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_RESPONSES]
+  object = bucket.objects[useresponse]
+  File.open('public/responses/'+useresponse, "w+") do |file|
+    object.read do |chunk|
+      file.write(chunk)
+    end
+   end
+  #Delete the reponse from the bucket
+  #object.delete
+
+  end #outer if
+ end
+ 
+ def ranking
  end
 
  private
  def ourcontest_params
     params.require(:ourcontest).permit(:name,:start,:end,:duration,:code)
  end
+ 
 end

@@ -29,10 +29,12 @@ class ActionsController < ApplicationController
  end
  
  def uploadedtoaws
+ #Function to upload test data to the s3 bucket
+ 
  # Make an object in your bucket for your upload
     s3 = AWS::S3.new
     bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_DETAILS]
-    filename = 'user1/' + params[:file].original_filename
+    filename = params[:file].original_filename
     obj = bucket.objects[filename]
     #obj = S3_BUCKET_DETAILS.objects[params[:file].original_filename]
     
