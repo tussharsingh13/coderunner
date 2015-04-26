@@ -31,6 +31,18 @@ class OurcontestsController < ApplicationController
   	  metadatafile = File.open(path, "w+") do |f|
   	  f.write(content)
 	  end
+  # Make an object in your bucket for your upload
+    	   s3 = AWS::S3.new
+    	   bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_DETAILS]
+   	   obj = bucket.objects[filename]
+         metadata = File.open(path)
+	 #Upload the file to s3 Bucket coderunnersubmissions
+	  obj.write( 
+	  file: metadata,
+	  acl: :public_read
+	  )
+	 File.delete(path)
+	  
    redirect_to :action => :index
   else
    render 'ourcontests/new'
