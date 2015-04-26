@@ -20,7 +20,7 @@ class MyThread(Thread):
 
 if __name__ == '__main__':
 	LOCAL_PATH = 'codechecker/'
-	s3 = boto.connect_s3('access key','secretid')
+	s3 = boto.connect_s3('access-key','secret-id')
 	bucket = s3.get_bucket('coderunnersubmissions')
 	names = {}
 	for i in xrange (1000) : 
@@ -33,8 +33,8 @@ if __name__ == '__main__':
 				filename = key.name.encode('utf-8')
 				namesplit = filename.split('#')
 				username = namesplit[0]
-				problemname = namesplit[1]
-				contestname = namesplit[2]
+				problemname = namesplit[2]
+				contestname = namesplit[1]
 				timestamp = namesplit[3]
 				timelimit = namesplit[4]
 				memorylimit = namesplit[5]

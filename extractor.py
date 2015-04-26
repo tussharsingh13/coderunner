@@ -5,7 +5,7 @@ import subprocess
 
 if __name__ == '__main__':
 	LOCAL_PATH = 'codechecker/'
-	s3 = boto.connect_s3('access key','secretid')
+	s3 = boto.connect_s3('access-key','secret-id')
 	bucket = s3.get_bucket('coderunnerdetails')
 	for key in bucket.list():
 		print key.name.encode('utf-8')

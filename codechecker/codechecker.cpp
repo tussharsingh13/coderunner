@@ -17,7 +17,7 @@
 #include <sys/stat.h>
 
 
-#define HOME_DIRECTORY "/home/suraj/Desktop/coderunner/codechecker/"
+#define HOME_DIRECTORY "/home/ujjwal/Desktop/BTP_Work/coderunner/codechecker"
 using namespace std;
 
 int input_files_count(string, string);

@@ -108,8 +108,8 @@ class OurcontestsController < ApplicationController
   #Delete response if present
   useresponse = current_user.username + '_response.html'
   s3 = AWS::S3.new
-  if (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_RESPONSES].objects[useresponse].exists?)
-   bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_RESPONSES]
+  if (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_USERS].objects[useresponse].exists?)
+   bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_USERS]
    object = bucket.objects[useresponse]
    object.delete
   end
@@ -175,12 +175,12 @@ class OurcontestsController < ApplicationController
    useresponse = current_user.username + '_response.html'
    @finalresponse = '/responses/'+useresponse
    
-   until (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_RESPONSES].objects[useresponse].exists?) do
+   until (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_USERS].objects[useresponse].exists?) do
     #Keep loading
    end
 
  s3 = AWS::S3.new
-  bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_RESPONSES]
+  bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_USERS]
   object = bucket.objects[useresponse]
   File.open('public/responses/'+useresponse, "w+") do |file|
     object.read do |chunk|

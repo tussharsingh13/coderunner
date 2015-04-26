@@ -15,7 +15,7 @@
 #include<time.h>
 #include<sstream>
 
-#define HOME_DIRECTORY "/home/suraj/Desktop/coderunner/codechecker/"
+#define HOME_DIRECTORY "/home/ujjwal/Desktop/BTP_Work/coderunner/codechecker"
 
 using namespace std;
 

@@ -1,0 +1,111 @@
+1. Introduced Codemirror in editor.html.erb
+<html>
+	  <head>
+		<script src="codemirror.js"></script>
+		<link rel="stylesheet" href="codemirror.css">
+		<script src="spreadsheet.js"></script>
+	  </head>
+	  
+	  <body> 
+	  	<h1 id="myHeader" onclick="getValue()">This is the editor!</h1>
+	 	<script> 
+	 	var myCodeMirror = CodeMirror(document.body, {value: "//Sample Javascript Code\n",mode:  "javascript"});
+	 	//var myCodeMirror= CodeMirror.fromTextArea(myTextArea);
+	 	</script>
+	  </body>
+	 
+	</html>
+	 <html>
+<head>
+2. Introduced required js in app/assets/Javascripts
+3. Pulled and merged from github
+4. Generated a model Solution:
+ rails generate model Solution problem:string code:text
+      invoke  active_record
+      create    db/migrate/20150214112719_create_solutions.rb
+      create    app/models/solution.rb
+      invoke    test_unit
+      create      test/models/solution_test.rb
+      create      test/fixtures/solutions.yml
+5. rake db:migrate
+== 20150214112719 CreateSolutions: migrating ==================================
+-- create_table(:solutions)
+   -> 0.0010s
+== 20150214112719 CreateSolutions: migrated (0.0011s) =========================
+5. Now,trying to create a form like structure for the editor.
+6. Basic Form created: 
+<html>
+	  <head>
+		<script src="codemirror.js"></script>
+		<link rel="stylesheet" href="codemirror.css">
+		<script src="spreadsheet.js"></script>
+	  </head>
+	  
+	  <body> 
+	  <%= form_for @solution, url: actions_editor_path do |form| %> 
+	  	<% if @solution.errors.any? %>
+    		<div id="error_explanation">
+      		<h2>
+        	<%= pluralize(@article.errors.count, "error") %> prohibited
+        	this article from being saved:
+      		</h2>
+      		<ul>
+        	<% @article.errors.full_messages.each do |msg| %>
+          		<li><%= msg %></li>
+        	<% end %>
+      		</ul>
+    		</div>
+    		<% end %>
+		<p>
+		<%= form.label :problem %><br>
+		<%= form.text_field :problem %>
+		</p>
+
+		<p>
+		<%= form.label :code  %><br>
+		<%= form.text_area :code %>
+		<script> var myCodeMirror = CodeMirror.fromTextArea(:code, {value: "function myScript(){return 100;}\n",mode:  "javascript"}); </script>
+		</p>
+
+		<p>
+		<%= form.submit "Submit Code" %>
+		</p>
+	  <% end %>
+	  	
+	  	
+	  	<script> 
+	 	var myCodeMirror = CodeMirror(document.body, {value: "//Sample Javascript Code\n",mode:  "javascript",readOnly: "true"});
+	 	//var myCodeMirror= CodeMirror.fromTextArea(myTextArea);
+	 	</script>
+	  </body>
+	 
+	</html>
+	 <html>
+<head>
+7. Replacing text area with codemirror instance
+<p>
+		<%= form.label :code  %><br>
+		<%= form.text_area :code %>
+		<script> var myCodeMirror = CodeMirror.fromTextArea(solution_code, {value: "function myScript(){return 100;}\n",mode:  	"javascript",indentWithTabs: true});</script>
+		<p>
+		<%= form.submit "Submit Code" %>
+		</p>
+		
+8. Modify the css file
+.CodeMirror {
+  /* Set height, width, borders, and global font properties here */
+  font-family: monospace;
+  height: 300px;
+  width: 200px;
+  border: 1px solid black;
+}
+
+8. IMPORTANT CODEMIRROR EVENTS, COMMANDS can be used to introduce further changes.
+eg. change fires every time the content of the editor is changed.
+
+<h1>Welcome#index</h1>
+<p>Find me in app/views/welcome/index.html.erb</p>
+<br>
+<%= link_to 'Editor', 'actions/editor' %>
+<br>
+<%= link_to 'Submit', 'actions/submit' %>

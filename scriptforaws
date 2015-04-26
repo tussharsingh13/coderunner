@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# This script polls the coderunnersubmissions s3 bucket 
+
+while true
+do
+#Check the s3 bucket & Transfer the files to the folder bucketupdates
+	aws s3 sync s3://coderunnersubmissions ./bucketupdates
+
+#Use ls to get the list of files in that folder
+	ls ./bucketupdates > pendingfiles.txt 
+
+#Call the codechecker for each of the files 
+#Loop Begin
+	#Delete each of those files from the bucket side by side
+ 	#aws s3 rm s3://mybucket/test2.txt
+
+#Send the responses side by side 
+#Loop End
+done
+
