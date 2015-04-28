@@ -4,6 +4,7 @@ class WelcomeController < ApplicationController
 
   def main
   @ourcontests = Ourcontest.all
+  @ourproblems = Ourproblem.all
   end
   
 end

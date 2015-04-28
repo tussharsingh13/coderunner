@@ -3,6 +3,7 @@ class OurcontestsController < ApplicationController
  def index
  @ourcontests = Ourcontest.all
  @ourcontest = Ourcontest.new
+ @ourproblems = Ourproblem.all
  end
 
  def new
@@ -176,7 +177,7 @@ class OurcontestsController < ApplicationController
    @finalresponse = '/responses/'+useresponse
    
    until (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_USERS].objects[useresponse].exists?) do
-    #Keep loading
+    sleep 1
    end
 
  s3 = AWS::S3.new
@@ -194,6 +195,23 @@ class OurcontestsController < ApplicationController
  end
  
  def ranking
+  @ourcontest = Ourcontest.find(params[:ourcontest_id])
+  ranklist = @ourcontest.code + '_ranking.html'
+  @currentranklist = '/ranking/'+ranklist
+  
+   until (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_DETAILS].objects[ranklist].exists?) do
+    sleep 1
+   end
+
+ s3 = AWS::S3.new
+  bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_DETAILS]
+  object = bucket.objects[ranklist]
+  File.open('public/ranking/'+ranklist, "w+") do |file|
+    object.read do |chunk|
+      file.write(chunk)
+    end
+   end
+  File.delete('public/ranking/'+ranklist)
  end
 
  private

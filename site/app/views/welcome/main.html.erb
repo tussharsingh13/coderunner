@@ -79,6 +79,36 @@
 <p> No Upcoming Contests </p>
 <% end %>
  
+<!-- Delete old contest and problem data -->
+<% @ourcontests.each do |ourcontest| %>
+<% current = Time.zone.now  %> 
+<% contestBegin = ourcontest.start  %> 
+<% contestEnd = ourcontest.end  %>
+<% contestBegan = contestBegin <= current %>
+<% contestOngoing = contestEnd >= current %> 
+    <% if contestBegan && !contestOngoing%>
+    <!-- Before deleting the contest, delete the contest problems through a query -->
+    <% if Time.zone.now.to_s >= (contestEnd+2.days).to_s %> 
+    <% @contestproblems = @ourproblems.where(:contestid => ourcontest.id) %>
+    <% @contestproblems.each do |ourproblem| %>
+    <% 	ourproblem.destroy %>
+    <% end %>
+     
+    <!-- #Now,delete the corresponding file in the public folder -->
+    <% prefix = 'public/problems/problems_list' %> 
+    <% filename = "#{ourcontest.id}.txt" %>
+    <% fullname = prefix + filename %>
+    <% if File.exist?(fullname) %>
+    <%	File.delete(fullname) %>
+     <% end %> 
+    <% ourcontest.destroy %>
+    <% end %>
+    <% end %> <!-- If contest has ended -->
+    </table>
+<%end%> <!-- end of contests loop -->
+
+
+
 <!--Admin View -->
 <% if current_user.admin? %>
 <br>

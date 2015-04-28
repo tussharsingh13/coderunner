@@ -1,0 +1,14 @@
+<html>
+<head>
+<h1> <%= @ourcontest.name%>'s Ranklist </h1>
+  
+<script>
+ var data='<%=j @currentranklist%>'
+$.ajax({   
+    url: data,
+    success: function (data) { $('body').append(data); },
+    dataType: 'html'
+});
+</script>
+</head>
+</html>

@@ -13,7 +13,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
    # Make an object in your bucket for your upload
     s3 = AWS::S3.new
     bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_RESPONSES]
-    filename = @user.username.to_s+'#'+'response.html'
+    filename = @user.username.to_s+'_'+'response.html'
     path = "public/submissions/"+filename
     uploadfile = File.open(path, "w+")
     	  

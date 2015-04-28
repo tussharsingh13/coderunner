@@ -63,7 +63,9 @@ class OurproblemsController < ApplicationController
  
  def show
   @ourcontest = Ourcontest.find(params[:ourcontest_id])
+  
   # Evaluating Conditions 
+  if (current_user.admin? == false)
   	current = Time.zone.now   
 	contestBegin = @ourcontest.start   
 	contestEnd = @ourcontest.end  
@@ -73,7 +75,7 @@ class OurproblemsController < ApplicationController
 		flash[:notice] = "Contest hasn't started yet!"
 		redirect_to welcome_main_path
 	end
-	
+  end	
   @ourproblem = Ourproblem.find(params[:id])
  end
  
