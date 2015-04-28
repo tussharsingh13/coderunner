@@ -17,7 +17,7 @@
 #include <sys/stat.h>
 
 
-#define HOME_DIRECTORY "/home/ujjwal/Desktop/BTP_Work/coderunner/codechecker"
+#define HOME_DIRECTORY "/home/suraj/Desktop/coderunner/codechecker/"
 using namespace std;
 
 int input_files_count(string, string);
@@ -43,18 +43,19 @@ int main(int argc, char* argv[])
 
 	count_files = s.str();
 
+	string executable_name = test_filename;
+	executable_name.erase(executable_name.end()-4,executable_name.end());
+
 	if(test_filename[length_test_filename-1] == 'p' && test_filename[length_test_filename-2] == 'p' && test_filename[length_test_filename-3] == 'c')
 	{
 		filename = "cplusplus.cpp";
-		operation1= "g++ "+ path_file + filename + " -o cplusplus";
-		operation2= "./cplusplus -n "+ test_filename +" -t "+ time_limit + " -m " + count_files + " -p " + problem_name + " -c " + contest_name + " -f " + memory_limit;
+		operation1= "g++ "+ path_file + filename + " -o " + executable_name + "_cplusplus";
+		operation2= "./" + executable_name + "_cplusplus -n "+ test_filename +" -t "+ time_limit + " -m " + count_files + " -p " + problem_name + " -c " + contest_name + " -f " + memory_limit;
 		
 		system(operation1.c_str());							
 		system(operation2.c_str());							
 	}
 
-	string executable_name = test_filename;
-	executable_name.erase(executable_name.end()-4,executable_name.end());
 
 	int length=0;
 	string compilation_error_file = HOME_DIRECTORY;
@@ -170,16 +171,20 @@ bool check_file(string directory, string num1, string num2, string name)
 
 void deleteGeneratedFiles(string path_output_directory, string diff_directory, string path_log_file_directory, string problem_name, string contest_name, string executable_name)
 {
-	string operation1 = "rm -rf ",operation2 = "rm -rf ",operation3 = "rm -rf ", operation4 = "rm -f ", operation5 = "rm -f ";
+	string operation1 = "rm -rf ",operation2 = "rm -rf ",operation3 = "rm -rf ", operation4 = "rm -f ", operation5 = "rm -f ", operation6 = "rm -f ", operation7 = "rm -f ";
 	operation1 = operation1 + path_output_directory + "*";
 	operation2 = operation2 + diff_directory + "*";
 	operation3 = operation3 + path_log_file_directory + "*";
 	operation4 = operation4 + HOME_DIRECTORY + contest_name + "/" + problem_name + "/compilation_error_files/" + executable_name + "_compilation_error_file.txt";
 	operation5 = operation5 + HOME_DIRECTORY + contest_name + "/" + problem_name + "/user_codes/" + executable_name;
+	operation6 = operation6 + HOME_DIRECTORY + executable_name + "_cplusplus";
+	operation7 = operation7 + HOME_DIRECTORY + executable_name + "_codechecker";
 
 	system(operation1.c_str());
 	system(operation2.c_str());
 	system(operation3.c_str());
 	system(operation4.c_str());
 	system(operation5.c_str());
+	system(operation6.c_str());
+	system(operation7.c_str());
 }

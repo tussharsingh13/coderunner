@@ -16,7 +16,7 @@
 #include <sstream>
 #include <ulimit.h>
 
-#define HOME_DIRECTORY "/home/ujjwal/Desktop/BTP_Work/coderunner/codechecker"
+#define HOME_DIRECTORY "/home/suraj/Desktop/coderunner/codechecker/"
 #define MAX 110
 
 using namespace std;
