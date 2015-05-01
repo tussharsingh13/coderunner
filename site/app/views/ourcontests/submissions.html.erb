@@ -1,0 +1,17 @@
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<h1> <%= current_user.username%>'s Submissions </h1>
+</head>
+
+<body>
+<script>
+ var data='<%=j @finalresponse%>'
+$.ajax({   
+    url: data,
+    success: function (data) { $('body').append(data); },
+    dataType: 'html'
+});
+</script>
+</body>
+</html>

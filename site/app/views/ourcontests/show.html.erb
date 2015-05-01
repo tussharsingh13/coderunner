@@ -57,6 +57,7 @@
 <% contestEnd = @ourcontest.end  %>
 <% condition1 = contestBegin <= current %>
 <% condition2 = contestEnd >= current %>
+<!-- Contest in Progress -->
 <% if condition1 && condition2 %>
  <h3> <%= "Contest is in progress!" %> </h3>
 <!-- Submit Button -->
@@ -85,7 +86,9 @@
      <%= "No Problems Added Yet" %>
     <% end %>
     <br>
-    <h2> <%= link_to "Submit", "/ourcontests/#{@ourcontest.id}/submit",:style=>'color:#FFFFFF;' %> </h2>
+    <h2> <%= link_to "Submit", "/ourcontests/#{@ourcontest.id}/submit",:style=>'color:#FFFFFF;' %>
+    &nbsp <%= link_to "My Submissions", "/ourcontests/#{@ourcontest.id}/submissions",:style=>'color:#FFFFFF;' %> 
+    &nbsp <%= link_to "Ranklist", "/ourcontests/#{@ourcontest.id}/ranking",:style=>'color:#FFFFFF;' %> </h2>
   </p>  
   </p>
   <% seconds = contestEnd - current %>
@@ -98,8 +101,10 @@
 	<h2>
 	<%= timeLeft = dd.to_s+"days "+hh.to_s + "hours " + mm.to_s + "minutes " + ss.to_s + "seconds left!" %>
 	</h2>
+<!-- Contest has ended -->
  <% elsif condition1 %>
   <%= "Contest has ended" %>
+  <!-- Contest hasn't begin yet -->
  <% else %>
   <% seconds = contestBegin - current %>
 	<% mm, ss = seconds.divmod(60) %>           

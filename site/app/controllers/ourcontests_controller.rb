@@ -106,6 +106,12 @@ class OurcontestsController < ApplicationController
  end
  
  def verdict
+ 
+ if ((current_user.lastsubmit &&  Time.zone.now.to_s >= (current_user.lastsubmit+2.minutes).to_s) || !current_user.lastsubmit)
+  
+  #Update last submit
+   current_user.update_attribute(:lastsubmit, Time.zone.now)
+   
   #Delete response if present
   useresponse = current_user.username + '_response.html'
   s3 = AWS::S3.new
@@ -175,11 +181,21 @@ class OurcontestsController < ApplicationController
 	
    useresponse = current_user.username + '_response.html'
    @finalresponse = '/responses/'+useresponse
-   
-   until (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_USERS].objects[useresponse].exists?) do
+   flag = 0 
+   #until (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_USERS].objects[useresponse].exists?) do
+   for i in 0..30
+    if (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_USERS].objects[useresponse].exists?)
+    	flag = 1
+    	break
+    end
     sleep 1
    end
-
+   
+   if flag == 0
+     render :text => "Server Error, check My Submissions after a while"
+     return false
+   end
+   
  s3 = AWS::S3.new
   bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_USERS]
   object = bucket.objects[useresponse]
@@ -190,8 +206,11 @@ class OurcontestsController < ApplicationController
    end
   #Delete the reponse from the bucket
   #object.delete
-
   end #outer if
+  else
+   #render :text => "The gap between two submissions must be atleast 2 minutes"
+   render :text => current_user.lastsubmit
+  end
  end
  
  def ranking
@@ -199,11 +218,22 @@ class OurcontestsController < ApplicationController
   ranklist = @ourcontest.code + '_ranking.html'
   @currentranklist = '/ranking/'+ranklist
   
-   until (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_DETAILS].objects[ranklist].exists?) do
+  flag = 0 
+   #until (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_DETAILS].objects[ranklist].exists?) do
+   for i in 0..15
+    if (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_DETAILS].objects[ranklist].exists?)
+    	flag = 1
+    	break
+    end
     sleep 1
    end
-
- s3 = AWS::S3.new
+   
+   if flag == 0
+     render :text => "Server Error, reload Ranklist after a while"
+     return false
+   end
+   
+  s3 = AWS::S3.new
   bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_DETAILS]
   object = bucket.objects[ranklist]
   File.open('public/ranking/'+ranklist, "w+") do |file|
@@ -214,6 +244,33 @@ class OurcontestsController < ApplicationController
   File.delete('public/ranking/'+ranklist)
  end
 
+ def submissions
+  useresponse = current_user.username + '_response.html'
+  @finalresponse = '/responses/'+useresponse
+  for i in 0..15
+    if (AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_RESPONSES].objects[useresponse].exists?)
+    	flag = 1
+    	break
+    end
+    sleep 1
+   end
+   
+   if flag == 0
+     render :text => "Server Error, reload Submissions after a while"
+     return false
+   end
+   
+  s3 = AWS::S3.new
+  bucket = s3.buckets[Rails.application.secrets.S3_BUCKET_RESPONSES]
+  object = bucket.objects[useresponse]
+  File.open('public/responses/'+useresponse, "w+") do |file|
+    object.read do |chunk|
+      file.write(chunk)
+    end
+   end
+ 
+ end
+ 
  private
  def ourcontest_params
     params.require(:ourcontest).permit(:name,:start,:end,:duration,:code)

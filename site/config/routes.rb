@@ -50,6 +50,8 @@ Rails.application.routes.draw do
  #For submit page of each contest
   get '/ourcontests/:ourcontest_id/submit', to: 'ourcontests#submit'
   post '/ourcontests/:ourcontest_id/verdict', to: 'ourcontests#verdict'
+  get '/ourcontests/:ourcontest_id/submissions', to: 'ourcontests#submissions'
+  get '/ourcontests/:ourcontest_id/ranking', to: 'ourcontests#ranking'
   
  #For Admin Rights
   get 'actions/adminrights'
