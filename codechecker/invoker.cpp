@@ -1,23 +1,26 @@
 //CALL THIS FILE AS ./A.OUT -N TEST_FILENAME -M PROBLEM_NAME -C CONTEST_NAME -T TIME_LIMIT -F MEMORY_LIMIT	
 //							 1		2		  3		4		  5		6		  7		8		9	    10     
-#include<unistd.h>
-#include<iostream>
-#include<stdlib.h>
-#include<string.h>
-#include<stdio.h>
-#include<fstream>
-#include<sys/types.h>
-#include<unistd.h>
-#include<sys/time.h>
-#include<sys/resource.h>
-#include<sys/wait.h>
-#include<signal.h>
-#include<time.h>
-#include<sstream>
+#include <unistd.h>
+#include <iostream>
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <fstream>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <sys/wait.h>
+#include <signal.h>
+#include <time.h>
+#include <sstream>
+#include <sys/stat.h>
 
 #define HOME_DIRECTORY "/home/suraj/Desktop/coderunner/codechecker/"
 
 using namespace std;
+
+bool exists(string);
 
 int main(int argc, char* argv[])
 {
@@ -31,9 +34,20 @@ int main(int argc, char* argv[])
 	operation1 = operation1 + path_codechecker_directory + codechecker_filename + " -o " + codechecker_out_filename;
 	operation2 = operation2 + codechecker_out_filename + " -n " + test_filename + " -m " + problem_name + " -t " + time_limit + " -c " + contest_name + " -f " + memory_limit;
 	system(operation1.c_str());
-	system(operation2.c_str());
+	if(exists(codechecker_out_filename))
+		system(operation2.c_str());
+	else
+	{
+		cout<<endl<<"Server Error : "<<codechecker_out_filename<<" Not Found"<<endl<<endl;
+		return -1;
+	}
 	return 0;
 }
 
+bool exists(string filename)
+{  
+	struct stat buffer;
+  	return (stat(filename.c_str(), &buffer) == 0); 
+}
 
 //    ./a.out -n problem01.cpp -m problem01 -c contest01 -t 1 -m 100
