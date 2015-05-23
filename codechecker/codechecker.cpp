@@ -2,6 +2,7 @@
 //			1	    2		 3		4		 5 	   6	   7	   8	   9	  10
 #include <unistd.h>
 #include <iostream>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -25,6 +26,7 @@ int comparer(int,string, string, string, string, string, string, string);
 bool exists(string);
 bool check_file(string, string, string, string);
 void deleteGeneratedFiles(string, string, string, string, string, string);
+void displayOutput(string, string, string,string, string);
 
 int main(int argc, char* argv[])
 {	
@@ -84,7 +86,7 @@ int main(int argc, char* argv[])
 		comparer(count,problem_name, path_output_directory, path_log_file_directory, diff_directory, test_filename, contest_name, executable_name);
 	}	
 	
-	//deleteGeneratedFiles(path_output_directory, diff_directory, path_log_file_directory, problem_name, contest_name, executable_name);
+	deleteGeneratedFiles(path_output_directory, diff_directory, path_log_file_directory, problem_name, contest_name, executable_name);
 	
 	return 0;
 }
@@ -159,17 +161,18 @@ int comparer(int count_files, string problem_name, string path_output_directory,
 
 		if(check_file(path_log_file_directory, num1,num2,executable_name + "_log_file") == -1)
 		{
-			cout<<endl<<"Server Error : "<<test_filename<<" Not Found"<<endl<<endl;
+			cout<<endl<<"Server Error : "<<executable_name<<"_log_file"<<num1<<num2<<".txt"<<" Not Found"<<endl<<endl;
 			return -1;
 		}
 		else if(check_file(path_log_file_directory, num1,num2,executable_name + "_log_file") == 0)
 		{
-			cout<<test_filename<<" "<<"TLE"<<endl;
+			//cout<<test_filename<<" "<<"TLE"<<endl;
+			displayOutput(path_log_file_directory, num1, num2,executable_name + "_log_file", test_filename);
 			break;	
 		}
 		if(check_file(diff_directory,num1,num2,executable_name + "_diff") == -1)
 		{
-			cout<<endl<<"Server Error : "<<test_filename<<" Not Found"<<endl<<endl;
+			cout<<endl<<"Server Error : "<<executable_name<<"_diff"<<num1<<num2<<".txt"<<" Not Found"<<endl<<endl;
 			return -1;
 		}
 	    else if(check_file(diff_directory,num1,num2,executable_name + "_diff") == 0)
@@ -203,6 +206,43 @@ bool check_file(string directory, string num1, string num2, string name)
 	}
 	else
 		return -1;
+}
+
+void displayOutput(string directory, string num1, string num2, string name, string test_filename)
+{
+	string file_to_be_checked = directory;
+	file_to_be_checked += name + num1 + num2 + ".txt";
+
+	ifstream infile(file_to_be_checked.c_str());
+
+    if (infile.good())
+    {
+    	string sLine;
+    	getline(infile, sLine);
+    	
+    	if(strcmp(sLine.c_str(),"Terminated")==0)
+    			cout<<test_filename<<" "<<"RE (SIGTERM)"<<endl;
+
+		else if(strcmp(sLine.c_str(),"Segmentation fault (core dumped)")==0)
+			cout<<test_filename<<" "<<"RE (SIGSEGV)"<<endl;
+
+		else if(strcmp(sLine.c_str(),"Illegal instruction (core dumped)")==0)
+			cout<<test_filename<<" "<<"RE (SIGILL)"<<endl;
+
+		else if(strcmp(sLine.c_str(),"Floating point exception (core dumped)")==0)
+			cout<<test_filename<<" "<<"RE (SIGFPE)"<<endl;
+
+		else if(strcmp(sLine.c_str(),"Aborted (core dumped)")==0) 
+			cout<<test_filename<<" "<<"RE (SIGABRT)"<<endl;
+
+		else if(strcmp(sLine.c_str(),"File size limit exceeded (core dumped)")==0) 
+			cout<<test_filename<<" "<<"RE (SIGXFSZ)"<<endl;
+
+		else if(strcmp(sLine.c_str(),"Killed")==0) 
+			cout<<test_filename<<" "<<"RE (TLE)"<<endl;
+    }
+
+    infile.close();
 }
 
 void deleteGeneratedFiles(string path_output_directory, string diff_directory, string path_log_file_directory, string problem_name, string contest_name, string executable_name)
