@@ -15,6 +15,7 @@
 #include <time.h>
 #include <sstream>
 #include <ulimit.h>
+#include <sys/stat.h>
 
 #define HOME_DIRECTORY "/home/suraj/Desktop/coderunner/codechecker/"
 #define MAX 110
@@ -24,7 +25,9 @@ using namespace std;
 
 void signal_handler(int);
 void setlimit(int);
-void execute_file(int, string, string, string, string, string);
+int execute_file(int, string, string, string, string, string);
+void display_contents(string);
+bool exists(string);
 
 void signal_handler(int signum)																	
 {
@@ -47,16 +50,27 @@ int main(int argc, char* argv[])
 	string operation;
 	operation = "g++ "+ path_test_file + test_file + " -o " + path_test_file + executable_name + " 2>" + compilation_error_file;
 	system(operation.c_str());	
-
+	//system("rm -f /home/suraj/Desktop/coderunner/codechecker/contest01/problem01/compilation_error_files/problem01_compilation_error_file.txt");
 	int length = 0;
 	ifstream diff_file;
-	diff_file.open((compilation_error_file).c_str(), ios::binary);
-	diff_file.seekg(0,ios::end);
-	length = diff_file.tellg();
 
-	if(length !=0)
+	if(exists(compilation_error_file))
 	{
-		cout<<test_file<<" "<<"COMPILATION ERROR"<<endl;
+		diff_file.open((compilation_error_file).c_str(), ios::binary);
+		diff_file.seekg(0,ios::end);
+		length = diff_file.tellg();
+	}
+	else
+	{
+		cout<<endl<<"Server Error : "<<compilation_error_file<<" Not Found"<<endl<<endl;
+		return -1;
+	}
+
+	if(length > 0)
+	{
+		cout<<test_file<<" "<<"CE (";
+		display_contents(compilation_error_file);
+		cout<<")"<<endl;
 		return 1;
 	}	
 
@@ -79,8 +93,8 @@ int main(int argc, char* argv[])
 
 			//clock_gettime(CLOCK_REALTIME, &start_time);
 
-			execute_file(i, problem_name, argv[4], executable_name, contest_name, executable_name);
-
+			if(execute_file(i, problem_name, argv[4], executable_name, contest_name, executable_name) == -1)
+				abort();
 			//clock_gettime(CLOCK_REALTIME, &end_time);
 
 			//exec_time = ( end_time.tv_sec - start_time.tv_sec ) + ( end_time.tv_nsec - start_time.tv_nsec )/1000000000.0;        //EXECUTION TIME
@@ -98,7 +112,7 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-void execute_file(int file_number, string problem_name, string string_time_limit,string test_file, string contest_name, string executable_name)
+int execute_file(int file_number, string problem_name, string string_time_limit,string test_file, string contest_name, string executable_name)
 {
 	int i,j;
 	string operation = "ulimit -t ";
@@ -124,7 +138,15 @@ void execute_file(int file_number, string problem_name, string string_time_limit
 	string log_filename = path_log_file_directory + "/" + executable_name + "_log_file" + num1 + num2 + ".txt";
 
 	operation = operation + string_time_limit + ";" + path_executable_directory + "./" + test_file + " <"+ input_filename + " >" + output_filename + " 2>" + log_filename;
-	system(operation.c_str());
+	if(exists(path_executable_directory + test_file))
+	{
+		system(operation.c_str());
+	}
+	else
+	{
+		cout<<endl<<"Server Error : "<<path_executable_directory<<test_file<<" Not Found"<<endl<<endl;
+		return -1;
+	}
 }
 	
 void setlimit(int time_limit)																		//SETS THE RESOURCE LIMIT
@@ -133,4 +155,23 @@ void setlimit(int time_limit)																		//SETS THE RESOURCE LIMIT
     rl.rlim_cur = time_limit;
     rl.rlim_max = time_limit + 1;
     setrlimit(RLIMIT_CPU, &rl);  
+}
+
+void display_contents(string file)
+{
+    string getcontent;
+    ifstream openfile (file.c_str());
+    if(openfile.is_open())
+    {
+        while(getline(openfile, getcontent))
+        {
+                cout << getcontent << endl;
+        }
+    }
+}
+
+bool exists(string filename)
+{  
+	struct stat buffer;
+  	return (stat(filename.c_str(), &buffer) == 0); 
 }
