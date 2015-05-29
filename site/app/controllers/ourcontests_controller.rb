@@ -208,8 +208,8 @@ class OurcontestsController < ApplicationController
   #object.delete
   end #outer if
   else
-   #render :text => "The gap between two submissions must be atleast 2 minutes"
-   render :text => current_user.lastsubmit
+   render :text => "The gap between two submissions must be atleast 2 minutes"
+   #render :text => current_user.lastsubmit
   end
  end
  

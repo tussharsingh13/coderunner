@@ -7,4 +7,6 @@ AWS.config(
 S3_BUCKET_SUBMISSIONS =  AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_SUBMISSIONS]
 S3_BUCKET_DETAILS =  AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_DETAILS]
 S3_BUCKET_USERS =  AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_USERS]
+S3_BUCKET_STATICCODEQUALITY =  AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_STATICCODEQUALITY]
+S3_BUCKET_STATICCODERESPONSES = AWS::S3.new.buckets[Rails.application.secrets.S3_BUCKET_STATICCODERESPONSES]
 

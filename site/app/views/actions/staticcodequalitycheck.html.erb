@@ -1,0 +1,44 @@
+<html>
+
+<head>
+<script src="codemirror.js"></script>
+<link rel="stylesheet" href="codemirror.css">
+<script src="javascript.js"></script>
+
+<div style="top: 3%; left: 35%; position: absolute;"> 
+<h1> Check Static Code Quality </h1>
+</div>
+</head>
+
+<body>
+<div style="top: 15%; left: 3%; position: absolute;"> 
+
+<h3> Language: C++ 
+<br>
+		
+<%= form_tag(url_for(:controller => 'actions', :action => 'staticcodequalityresponse'), :method => 'post',multipart: true) do |f| %> 
+ 
+<br>
+ Source Code: 
+
+ <%= text_area_tag :sourcecode %>
+		<script> var myCodeMirror = CodeMirror.fromTextArea(sourcecode,{lineNumbers: true,tabSize: 2,readOnly: false,matchBrackets: true});
+		myCodeMirror.setSize(600,200);
+		</script>
+		<script>
+		myCodeMirror.setValue("//Enter your code here");
+		</script>
+<br> 
+Or choose a file: 
+    <%= file_field_tag :sourcefile  %>
+<br>
+<br>
+ <%= submit_tag "Check Static Code Quality" %> 
+ 
+<% end %>
+</h3>
+</body>
+
+</div>
+</html>
+

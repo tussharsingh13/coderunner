@@ -58,6 +58,10 @@ Rails.application.routes.draw do
   post 'actions/requestsent'
   post 'actions/requestapproved'
   
+ #For Static Code Quality Analysis
+  get 'actions/staticcodequalitycheck'
+  post 'actions/staticcodequalityresponse'
+  
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
