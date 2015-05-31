@@ -35,7 +35,8 @@
  <p>
     <b> Problem Statement </b>
     <br>
-    <%= @ourproblem.statement%>
+    <%= @ourproblem.statement.gsub(/\r\n/, '<br/>') %>
+    
   </p>
   
   <p>

@@ -87,7 +87,8 @@
     <% end %>
     <br>
     <h2> <%= link_to "Submit", "/ourcontests/#{@ourcontest.id}/submit",:style=>'color:#FFFFFF;' %>
-    &nbsp <%= link_to "My Submissions", "/ourcontests/#{@ourcontest.id}/submissions",:style=>'color:#FFFFFF;' %> 
+    &nbsp <%= link_to "My Submissions", "/ourcontests/#{@ourcontest.id}/submissions",:style=>'color:#FFFFFF;' %>
+    &nbsp <%= link_to "Check Static Code Quality", "/actions/staticcodequalitycheck",:style=>'color:#FFFFFF;' %>  
   </p>  
   </p>
   <% seconds = contestEnd - current %>
